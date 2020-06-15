@@ -3,7 +3,7 @@ import { OrbitControls } from '../../../modules/three.js/examples/jsm/controls/O
 import { GLTFLoader } from '../../../modules/three.js/examples/jsm/loaders/GLTFLoader.js';
 import { asyncGet } from "../../../modules/http.js";
 import { SpatialIRContainer } from "../../../modules/spatial.js";
-import { SpatialProcessorNode, SchroederReverberatorNode } from "../../../modules/sound.js";
+import { SpatialProcessorNode, RoomReverberatorNode, SchroederReverberatorNode } from "../../../modules/sound.js";
 
 /*********************************/
 /* Recursos de la aplicación web */
@@ -12,6 +12,19 @@ const _3D_PERSON_MODEL_ = "../models/gltf/LeePerrySmith/LeePerrySmith.glb";
 const _3D_PERSON_TEXTURE_MAP = "../models/gltf/LeePerrySmith/Map-COL.jpg";
 const _3D_PERSON_TEXTURE_SPECULAR_MAP = "../models/gltf/LeePerrySmith/Map-SPEC.jpg";
 const _3D_PERSON_TEXTURE_NORMAL_MAP = "../models/gltf/LeePerrySmith/Infinite-Level_02_Tangent_SmoothUV.jpg";
+const _BRIR_ = [
+    {
+        name: "Room_RES4",
+        url: "https://raw.githubusercontent.com/Shawarma-ASSD/resources/master/brir/BRIR_4.json",
+        container: null
+    },
+    {
+        name: "Room_RES8",
+        url: "https://shawarma-assd.github.io/resources/brir/SBSBRIR00.json",
+        container: null
+    }
+];
+const _BRIR_DEFAULT_ = "Room_RES8";
 const _HRTF_ = [
     {
         database: "ari",
@@ -83,6 +96,7 @@ var context = null;
 var spatializer = null;
 var source = null;
 var recorder = null;
+var volume = null;
 
 /************************/
 /* Callbacks de eventos */
@@ -146,24 +160,31 @@ async function onRun() {
     /* Busco opciones elegidas */
     let databaseSelected = document.getElementById('database').selectedIndex;
     let sampleSelected = document.getElementById('sample').value;
+    let reverberatorSelected = document.getElementById('reverberator').value;
 
-    /* Cargamos la respuesta impulsiva HRTF */
-    let container = await initImpulseResponse(_HRTF_[databaseSelected].database);
-
-    /* Cargamos el audio context */
-    initAudioContext(container.rate);
-
-    /* Cargamos la muestra de sonido */
+    /* Inicializando, cargandos cosas... */
+    let hrirContainer = await initImpulseResponse(_HRTF_[databaseSelected].database);
+    initAudioContext(hrirContainer.rate);
     await initSoundSource(sampleSelected);
 
-    /* Conectamos el sistema */
-    reverberator = new SchroederReverberatorNode(context);
-    reverberator.setParameters(0.05, 0.025);
+    /* Instanciando nodos y conectando el grafo de procesamiento */
+    volume = new GainNode(context, {gain: 10.0});
+
+    if (reverberatorSelected == "schroeder") {
+        reverberator = new SchroederReverberatorNode(context);
+        reverberator.setParameters(0.05, 0.015);
+    } else if (reverberatorSelected == "brir") {
+        let brirContainer = await initRoomImpulsiveResponse(_BRIR_DEFAULT_);
+        reverberator = new RoomReverberatorNode(context);
+        reverberator.setSpatialIRContainer(brirContainer);
+    }
+
     spatializer = new SpatialProcessorNode(context);
-    spatializer.setHRIRContainer(container);
+    spatializer.setHRIRContainer(hrirContainer);
     spatializer.setReverberator(reverberator);
-    spatializer.connect(context.destination);
     source.connect(spatializer.input());
+    spatializer.connect(volume);
+    volume.connect(context.destination);
 
     /* Creo y conecto el audio recorder */
     recorder = new Recorder(spatializer.output());
@@ -200,12 +221,10 @@ function onControlChange() {
     // Convertimos a las coordenadas esféricas convencionales
     let azimutal = sphericalPosition.theta * 90.0 / (Math.PI / 2);
     let elevation = ((Math.PI / 2) - sphericalPosition.phi) * 90.0 / (Math.PI / 2);
-    let distance = sphericalPosition.radius / 500.0;
+    let distance = sphericalPosition.radius * 0.01;
 
     // Actualizamos estado del proceso de audio
-    if (spatializer?.isAvailable()) {
-        spatializer.setPosition(azimutal, elevation, distance);
-    }
+    spatializer?.setPosition(azimutal, elevation, distance);
 }
 
 /*******************************/
@@ -236,6 +255,20 @@ function initAudioContext(rate) {
         );
         context.suspend();
     }
+}
+
+// initRoomImpulsiveResponse()
+// Inicialización de las respuesta impulsivas para reverberacion obtenidas de la base de datos
+// para la construcción de los filtros FIR correspondientes para la habitación
+// @param name: Nombre de la BRIR seleccionada
+async function initRoomImpulsiveResponse(name) {
+    let curr = _BRIR_.find(brir => brir.name == name);
+    if (curr.container === null) {
+        let response = await asyncGet(curr.url);
+        let json = await response.text();
+        curr.container = SpatialIRContainer.FromJson(JSON.parse(json));
+    }
+    return curr.container;
 }
 
 // initSoundSource()
@@ -324,10 +357,11 @@ function initPerson() {
 function initControls() {
     controls = new OrbitControls( camera, renderer.domElement );
     controls.screenSpacePanning = false;
-    controls.minDistance = 30;
+    controls.minDistance = 40;
     controls.maxDistance = 800;
     controls.maxPolarAngle = Math.PI;
-    controls.rotateSpeed = 0.25;
+    controls.rotateSpeed = 0.2;
+    controls.enablePan = false;
     controls.addEventListener('change', onControlChange);
 }
 

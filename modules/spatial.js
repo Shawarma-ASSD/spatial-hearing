@@ -1,5 +1,3 @@
-export { SpatialIRContainer };
-
 const SIMPLE_FREE_FIELD_HRIR = "SimpleFreeFieldHRIR";
 const MULTI_SPEAKER_BRIR = "MultiSpeakerBRIR";
 
@@ -7,7 +5,7 @@ const MULTI_SPEAKER_BRIR = "MultiSpeakerBRIR";
 // Ejecuta la compleja tarea de convertir un ángulo
 // que se encuentra en el dominio de los grados al
 // dominio radian. o_O
-function toRadians(degrees) {
+export function toRadians(degrees) {
   var pi = Math.PI;
   return degrees * (pi/180);
 }
@@ -17,7 +15,7 @@ function toRadians(degrees) {
 // @param azimutal: Ángulo azimutal
 // @param elevation: Ángulo de elevación
 // @param distance: Distancia
-function toCartesian(azimutal, elevation, distance) {
+export function toCartesian(azimutal, elevation, distance) {
     return [
         distance * Math.cos(toRadians(elevation)) * Math.cos(toRadians(azimutal)),
         distance * Math.cos(toRadians(elevation)) * Math.sin(toRadians(azimutal)),
@@ -30,7 +28,7 @@ function toCartesian(azimutal, elevation, distance) {
 // cada respuesta impulsiva está vinculada a una posición del espacio. Se conocen
 // el orden de la respuesta, la frecuencia de muestreo, las posiciones y sus respuestas 
 // ligadas. Las respuestas impulsivas son binaurales, o sea, estéreo.
-class SpatialIRContainer {
+export class SpatialIRContainer {
 
     // FromJson
     // Factory para construir un SpatialIRContainer a partir de un json obtenido
