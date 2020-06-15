@@ -8,9 +8,9 @@ import { SpatialProcessorNode, SchroederReverberatorNode, RoomReverberatorNode }
 /*********************************/
 /* Recursos de la aplicación web */
 /*********************************/
-const _WAV_URL_ = "https://shawarma-assd.github.io/testings/data/indian_48000.wav";
-const _HRTF_URL_ = "https://media.githubusercontent.com/media/shawarma-assd/testings/master/data/ari.json";
-const _BRIR_URL_ =  "https://media.githubusercontent.com/media/shawarma-assd/testings/master/data/SBSBRIR00.json"
+const _WAV_URL_ = "https://shawarma-assd.github.io/resources/samples/indian_48000.wav";
+const _HRTF_URL_ = "https://shawarma-assd.github.io/resources/hrir/ari.json";
+const _BRIR_URL_ = "https://shawarma-assd.github.io/resources/brir/SBSBRIR00.json";
 const _3D_PERSON_MODEL_ = "../models/gltf/LeePerrySmith/LeePerrySmith.glb";
 const _3D_PERSON_TEXTURE_MAP = "../models/gltf/LeePerrySmith/Map-COL.jpg";
 const _3D_PERSON_TEXTURE_SPECULAR_MAP = "../models/gltf/LeePerrySmith/Map-SPEC.jpg";

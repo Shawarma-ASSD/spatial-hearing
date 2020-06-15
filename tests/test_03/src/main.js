@@ -1,11 +1,8 @@
 function httpGetAsync(url, callback, responseType)
 {
     var xmlHttp = new XMLHttpRequest();
-    console.log('Por hacer el GET, URL: ', url);
     xmlHttp.onreadystatechange = function() { 
-        console.log('readystatechange');
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-            console.log('Por llamar al callback()');
             callback(xmlHttp.response);
         }
     }
@@ -105,8 +102,8 @@ let timeout = null;
 let animating = false;
 
 // Una vez que esta todo inicializado, solictamos los archivos de la HRTF y el sonido WAV
-httpGetAsync("https://media.githubusercontent.com/media/shawarma-assd/testings/master/data/HRIR1HUTUBS.json", callbackHRTF, null);
-httpGetAsync('https://shawarma-assd.github.io/testings/data/mixfinal.wav', callbackWav, 'arraybuffer');
+httpGetAsync("https://shawarma-assd.github.io/resources/hrir/HRIR1HUTUBS.json", callbackHRTF, null);
+httpGetAsync('https://shawarma-assd.github.io/resources/samples/mixfinal.wav', callbackWav, 'arraybuffer');
 
 function connectGraph() {
     gain = new GainNode(audioContext,
