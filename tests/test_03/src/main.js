@@ -389,6 +389,7 @@ function onWavLoad(event) {
             audioContext.decodeAudioData(event.target.result, function(buffer) {
                     userSoundBuffer = audioContext.createBuffer(2, buffer.length, audioContext.sampleRate);
                     userSoundBuffer = buffer;
+                    initUserSound();
                 }
             );
         };
