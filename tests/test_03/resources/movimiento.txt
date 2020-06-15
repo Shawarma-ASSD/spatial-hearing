@@ -1,0 +1,34 @@
+0 azimuth y elevation
+Cada uno en su cuadrado
+
+	 izq	der
+y voy de lado a lado cada uno en el cuadrado
+	 4s	5.5s
+
+izq	der
+lado a lado cada uno en el cuadrado 
+8s	9.5s
+
+      ab
+hasta abajo hasta abajo papi hasta abajo
+      12s
+
+izq   ab
+hasta abajo hasta abajo papi hasta abajo
+15s   15.8s
+
+18.5s 	  20
+una mano arriba tomando tequila 
+
+21	 22
+una mano arriba tomando tequila
+
+23.5	24.5
+una mano arriba tomando tequila
+
+25.5		27
+con limon y sal clap clap clap
+
+28		29
+con limon y sal clap clap clap
+
