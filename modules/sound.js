@@ -8,7 +8,7 @@ export { SpatialProcessorNode, SchroederReverberatorNode, RoomReverberatorNode }
 // por la discontinuidad del cambio de las características del nodo, se configura siempre
 // , se use o no, un transitionTime para hacer crossfading.
 class SpatialNode {
-    constructor(context, azimutal=0.0, elevation=0.0, distance=1.0, transition=0.05) {
+    constructor(context, azimutal=0.0, elevation=0.0, distance=1.0, transition=0.03) {
         this.context = context;
         this.transitionTime = transition;
         this.azimutal = azimutal;
@@ -48,6 +48,11 @@ class SpatialNode {
     // Expone la entrada del nodo para conexiones,
     // se sobrecarga retornando el nodo inicial del sistema.
     input() {}
+
+    // output
+    // Expone la salida del nodo para conexiones
+    // se sobrecarga retornando el nodo final del sistema.
+    output() {}
 }
 
 // SpatialProcessorNode
@@ -112,6 +117,12 @@ class SpatialProcessorNode extends SpatialNode {
     // Expone la entrada del nodo procesador de sonido espacial
     input() {
         return this.volume;
+    }
+
+    // output
+    // Expone la salida del nodo procesador de sonido espacial
+    output() {
+        return this.buffer;
     }
 
     // setHRIRContainer

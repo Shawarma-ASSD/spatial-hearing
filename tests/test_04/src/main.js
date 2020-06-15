@@ -82,29 +82,57 @@ var reverberator = null;
 var context = null;
 var spatializer = null;
 var source = null;
+var recorder = null;
 
 /************************/
 /* Callbacks de eventos */
 /************************/
 
+// onExportWav
+// Creo un elemento de reproducción y descarga del .wav grabado
+function onExportWav(blob) {
+    var url = URL.createObjectURL(blob);
+    var li = document.createElement('li');
+    var au = document.createElement('audio');
+    var hf = document.createElement('a');
+    au.controls = true;
+    au.src = url;
+    hf.href = url;
+    hf.download = new Date().toISOString() + '.wav';
+    hf.innerHTML = 'Download .WAV';
+    li.appendChild(au);
+    li.appendChild(hf);
+    document.getElementById('recordings').appendChild(li);
+}
+
 // onPlay()
 // Se busca iniciar la reproducción.
 function onPlay() {
+    document.getElementById('status').textContent = "Grabando...";
+    document.getElementById('play').disabled = true;
+    document.getElementById('stop').disabled = false;
     context?.resume();
+    recorder?.clear();
+    recorder?.record();
 }
 
 // onStop()
 // Se busca parar la reproducción.
 function onStop() {
+    document.getElementById('status').textContent = "Grabación finalizada.";
+    document.getElementById('play').disabled = false;
+    document.getElementById('stop').disabled = true;
     context?.suspend();
+    recorder?.stop();
+    recorder?.exportWAV(onExportWav);
 }
 
 // onRun()
 // Se mandaron a cargar las configuraciones deseadas de HRTF y muestra wav.
 async function onRun() {
-    /* Deshabilito botones */
     document.getElementById('play').disabled = true;
     document.getElementById('stop').disabled = true;
+    document.getElementById('run').disabled = true;
 
     /* Si hay instancias previas, las cierro */
     if (context !== null) {
@@ -137,9 +165,13 @@ async function onRun() {
     spatializer.connect(context.destination);
     source.connect(spatializer.input());
 
+    /* Creo y conecto el audio recorder */
+    recorder = new Recorder(spatializer.output());
+
     /* Habilito botones */
     document.getElementById('play').disabled = false;
-    document.getElementById('stop').disabled = false;
+    document.getElementById('stop').disabled = true;
+    document.getElementById('run').disabled = false;
 }
 
 // onDatabaseSelected(event)
@@ -215,12 +247,12 @@ async function initSoundSource(wav) {
     let wavDeclaration = _WAV_[wav];
     if (wavDeclaration.buffer === null) {
         let wavResponse = await asyncGet(wavDeclaration.url);
-        wavDeclaration.buffer = await wavResponse.arrayBuffer();
+        wavDeclaration.buffer = await context.decodeAudioData(await wavResponse.arrayBuffer());
     }
     source = new AudioBufferSourceNode(
         context,
         {
-            buffer: await context.decodeAudioData(wavDeclaration.buffer),
+            buffer: wavDeclaration.buffer,
             loop: true
         }
     );
@@ -245,7 +277,7 @@ async function initImpulseResponse(database) {
 // como la escena, el renderizador.
 function initGeneralScene() {
     scene = new THREE.Scene();
-    renderer = new THREE.WebGLRenderer();
+    renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
 }
@@ -295,6 +327,7 @@ function initControls() {
     controls.minDistance = 30;
     controls.maxDistance = 800;
     controls.maxPolarAngle = Math.PI;
+    controls.rotateSpeed = 0.25;
     controls.addEventListener('change', onControlChange);
 }
 
