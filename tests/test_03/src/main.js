@@ -357,7 +357,6 @@ function updateHRTFInfo() {
     document.getElementById("radiusText").textContent = spatializer.distance;
     document.getElementById("positionText").textContent = spatializer.getPositionText();
     let resp = spatializer.getImpulseResponses();
-    console.log('ImpulseResponses', resp.getChannelData(0));
     plotter.plot([resp.getChannelData(0), resp.getChannelData(1)]);
 }
 
