@@ -94,10 +94,10 @@ body {
 
 /* Slideshow container */
 .slideshow-container {
-    width: 500px;
+    width: 550px;
     position: absolute;
     left: 60%;
-    top: 10%;
+    top: 16%;
 }
 
 /* Hide the images by default */
