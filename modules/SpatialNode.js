@@ -6,7 +6,7 @@
 // por la discontinuidad del cambio de las características del nodo, se configura siempre
 // , se use o no, un transitionTime para hacer crossfading.
 export class SpatialNode {
-    constructor(context, azimutal=0.0, elevation=0.0, distance=1.0, transition=0.05) {
+    constructor(context, azimutal=0.0, elevation=0.0, distance=1.0, transition=0.1) {
         this.context = context;
         this.transitionTime = transition;
         this.azimutal = azimutal;

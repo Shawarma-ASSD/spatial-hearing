@@ -25,7 +25,7 @@ const _BRIR_ = [
     },
     {
         name: "Conference",
-        url: "https://shawarma-assd.github.io/resources/brir/chamber_hall.json",
+        url: "https://shawarma-assd.github.io/resources/brir/conference_room.json",
         container: null
     }
 ];
@@ -51,13 +51,19 @@ const _WAV_ = [
         buffer: null
     },
     {
-        name: "Discurso (Mujer)",
+        name: "Discurso II (Mujer)",
+        supported: ["hutubs"],
+        url: "https://shawarma-assd.github.io/resources/samples/female.wav",
+        buffer: null
+    },
+    {
+        name: "Discurso I (Mujer)",
         supported: ["hutubs"],
         url: "https://shawarma-assd.github.io/resources/samples/woman_44100.wav",
         buffer: null
     },
     {
-        name: "Discurso (Mujer)",
+        name: "Discurso I (Mujer)",
         supported: ["ari"],
         url: "https://shawarma-assd.github.io/resources/samples/woman_48000.wav",
         buffer: null
@@ -174,7 +180,7 @@ async function onRun() {
     await initSoundSource(sampleSelected);
 
     /* Instanciando nodos y conectando el grafo de procesamiento */
-    volume = new GainNode(context, {gain: 100.0});
+    volume = new GainNode(context, {gain: 10.0});
 
     if (reverberatorSelected == "schroeder") {
         reverberator = new SchroederReverberatorNode(context);
