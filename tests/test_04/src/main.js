@@ -369,10 +369,10 @@ function initPerson() {
 function initControls() {
     controls = new OrbitControls( camera, renderer.domElement );
     controls.screenSpacePanning = false;
-    controls.minDistance = 40;
+    controls.minDistance = 20;
     controls.maxDistance = 800;
     controls.maxPolarAngle = Math.PI;
-    controls.rotateSpeed = 0.2;
+    controls.rotateSpeed = 0.25;
     controls.enablePan = false;
     controls.addEventListener('change', onControlChange);
 }
