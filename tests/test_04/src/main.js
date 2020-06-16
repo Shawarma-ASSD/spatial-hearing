@@ -180,7 +180,7 @@ async function onRun() {
     await initSoundSource(sampleSelected);
 
     /* Instanciando nodos y conectando el grafo de procesamiento */
-    volume = new GainNode(context, {gain: 10.0});
+    volume = new GainNode(context, {gain: 45.0});
 
     if (reverberatorSelected == "schroeder") {
         reverberator = new SchroederReverberatorNode(context);
@@ -199,7 +199,7 @@ async function onRun() {
     volume.connect(context.destination);
 
     /* Creo y conecto el audio recorder */
-    recorder = new Recorder(spatializer.output());
+    recorder = new Recorder(volume);
 
     /* Habilito botones */
     document.getElementById('play').disabled = false;
@@ -369,7 +369,7 @@ function initPerson() {
 function initControls() {
     controls = new OrbitControls( camera, renderer.domElement );
     controls.screenSpacePanning = false;
-    controls.minDistance = 20;
+    controls.minDistance = 40   ;
     controls.maxDistance = 800;
     controls.maxPolarAngle = Math.PI;
     controls.rotateSpeed = 0.25;

@@ -1,4 +1,3 @@
-import { SpatialNode } from "./SpatialNode.js";
 import { SpatialConvolverNode } from "./SpatialConvolverNode.js";
 
 // RoomReverberatorNode

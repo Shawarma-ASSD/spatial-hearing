@@ -56,12 +56,14 @@ export class SpatialProcessorNode extends SpatialNode {
     // @param elevation: Elevación de la nueva posición
     // @param distance: Distancia de la nueva posición
     setPosition(azimutal, elevation, distance) {
-        super.setPosition(azimutal, elevation, distance);
-        if (azimutal !== null && elevation !== null && distance !== null) {
-            this.reverberator?.setPosition(azimutal, elevation, distance);
-            this.convolver.setPosition(azimutal, elevation, distance);
-            this.buffer.gain.value = 1 / Math.pow(distance, 2);
-            return true;
+        if (azimutal !== this.azimutal || elevation !== this.elevation || distance !== this.distance) {
+            super.setPosition(azimutal, elevation, distance);
+            if (azimutal !== null && elevation !== null && distance !== null) {
+                this.reverberator?.setPosition(azimutal, elevation, distance);
+                this.convolver.setPosition(azimutal, elevation, distance);
+                this.buffer.gain.value = 1 / Math.pow(distance, 2);
+                return true;
+            }
         }
         return false;
     }
