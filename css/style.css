@@ -6,9 +6,11 @@ body {
     background-position-x: left;
 }
 
+#intro-image {
+    width: 70%;
+}
+
 #intro {
-    background-image: url("../img/background_1.jpg");
-    color: rgb(190, 190, 190);
     text-align: center;
     text-justify: distribute;
     position: absolute;
@@ -18,18 +20,17 @@ body {
 
 #intro-button {
     display: inline-block;
-    padding: 16px 32px;
+    padding: 10px 30px;
     color: white;
     border: none;
     background-color: red;
     text-align: center;
     text-decoration: none;
-    font-size: 16px;
+    font-size: 22px;
+    font-family: Bebas;
 }
 
 #intro-title {
-    text-rendering: geometricPrecision;
-    -webkit-font-smoothing: antialiased;
     color: white;
     font-family: BebasNeue;
     font-size: 100px;
