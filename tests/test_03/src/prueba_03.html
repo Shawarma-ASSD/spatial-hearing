@@ -19,7 +19,8 @@
             </p>
             <b><span>Volumen: </span></b> <span id="volumeText">100</span> <span>%</span>
             <input type="range" id="volume" value="100" min="0" max="500" step="1"></input>
-        </div>        
+        </div>
+
 
         <div class="cell">
             <h2>2. Seleccion de las coordenadas</h2>
@@ -33,7 +34,8 @@
             <b><span>Radius: </span></b> <span id="radiusText">1</span> <span>m</span>
             <br>
             <button id="animationButton"> Start moving sound source </button>
-            <button id="offAnimationButton"> Stop moving </button>
+            <button id="offAnimationButton"> Stop moving </button> <br>
+            <ul id="recordings"></ul>
             <br>
         </div>
 
@@ -57,7 +59,7 @@
             <p> Si lo desea, puede cargar un archivo WAV de sonido distinto. </p>
             <input type="file" id="wavSelector"></input>
         </div>
-        <script> </script>
+        <script src="../../../modules/recorder.js"></script>
         <script type="module" src="main.js"></script>
     </body>
 </html>
