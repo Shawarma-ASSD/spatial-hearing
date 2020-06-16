@@ -1,18 +1,28 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <script src="../../../modules/recorder.js"></script>
         <script type="module" src="main.js"></script>
     </head>
     <body>
-        <div>
-            <select id="database"></select>
-            <select id="sample"></select>
-            <button id="run">Cargar</button>
+        <div id="toolbar">
+            <div>
+                <select id="database"></select>
+                <select id="sample"></select>
+                <select id="reverberator">
+                    <option value="schroeder">Reverberador Schroeder</option>
+                    <option value="brir">Reverberador BRIR</option>
+                </select>
+                <button id="run">Cargar</button>
+                <button id="play" disabled>Reproducir</button>
+                <button id="stop" disabled>Parar</button>
+            </div>
+            <span id="status"></span>
+            <ul id="recordings"></ul>
         </div>
-
-        <div>
-            <button disabled="true" id="play">Reproducir</button>
-            <button disabled="true" id="stop">Parar</button>
+        
+        <div id="recordinglist">
         </div>
     </body>
 </html>

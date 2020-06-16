@@ -1,0 +1,21 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+#toolbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#recordingslist {
+    position: absolute;
+    left: 0;
+    top: 100px;
+}
+
+span {
+    color: white;
+}
