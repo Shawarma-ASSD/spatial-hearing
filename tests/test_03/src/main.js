@@ -380,6 +380,7 @@ function animation() {
     else if ((elapsed >= 29-1.1*step/1000) && (elapsed <= 29)) {
         spatializer.setPosition( spatializer.azimutal, +70, spatializer.distance);   
     }
+    updateHRTFInfo();
 }
 
 function updateHRTFInfo() {
