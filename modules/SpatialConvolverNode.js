@@ -5,7 +5,7 @@ import { SpatialNode } from "./SpatialNode.js";
 // dinámicamente acorde a la posición la respuesta impulsiva y aplicando un cross-fading.
 export class SpatialConvolverNode extends SpatialNode {
     constructor(context, azimutal=0.0, elevation=0.0, distance=1.0) {
-        super(context, azimutal, elevation, distance, 0.1);
+        super(context, azimutal, elevation, distance);
         this.container = null;
         this.currentTime = null;
         this.currentConvolver = 0;
@@ -14,7 +14,7 @@ export class SpatialConvolverNode extends SpatialNode {
         this.outputBuffer = new GainNode(this.context);
         this.faders = [
             new GainNode(this.context, {gain: 1.0}),
-            new GainNode(this.context, {gain: 0.01})
+            new GainNode(this.context, {gain: 0})
         ];
         this.convolvers = [
             new ConvolverNode(this.context),
@@ -85,10 +85,10 @@ export class SpatialConvolverNode extends SpatialNode {
             if (this.container !== null){
                 if (this.isAvailable()) {
                     this.currentTime = this.context.currentTime + this.transitionTime;
-                    this.faders[this.currentConvolver].gain.linearRampToValueAtTime(0.01, this.currentTime);
+                    this.faders[this.currentConvolver].gain.linearRampToValueAtTime(0, this.currentTime);
                     this.currentConvolver = this.currentConvolver == 0 ? 1 : 0;
+                    this.faders[this.currentConvolver].gain.linearRampToValueAtTime(1, this.currentTime);
                     this.convolvers[this.currentConvolver].buffer = this.container.closestBuffer(azimutal, elevation, distance);
-                    this.faders[this.currentConvolver].gain.linearRampToValueAtTime(0.99, this.currentTime);
                     return true;
                 }
             }

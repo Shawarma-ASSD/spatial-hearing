@@ -14,17 +14,23 @@ const _3D_PERSON_TEXTURE_SPECULAR_MAP = "../models/gltf/LeePerrySmith/Map-SPEC.j
 const _3D_PERSON_TEXTURE_NORMAL_MAP = "../models/gltf/LeePerrySmith/Infinite-Level_02_Tangent_SmoothUV.jpg";
 const _BRIR_ = [
     {
-        name: "Room_RES4",
-        url: "https://raw.githubusercontent.com/Shawarma-ASSD/resources/master/brir/BRIR_4.json",
+        name: "Room_4",
+        url: "https://shawarma-assd.github.io/resources/brir/BRIR_4.json",
         container: null
     },
     {
-        name: "Room_RES8",
+        name: "Room_8",
         url: "https://shawarma-assd.github.io/resources/brir/SBSBRIR00.json",
+        container: null
+    },
+    {
+        name: "Conference",
+        url: "https://shawarma-assd.github.io/resources/brir/chamber_hall.json",
         container: null
     }
 ];
-const _BRIR_DEFAULT_ = "Room_RES8";
+const _BRIR_44100_DEFAULT_ = "Conference";
+const _BRIR_48000_DEFAULT_ = "Room_8";
 const _HRTF_ = [
     {
         database: "ari",
@@ -168,13 +174,13 @@ async function onRun() {
     await initSoundSource(sampleSelected);
 
     /* Instanciando nodos y conectando el grafo de procesamiento */
-    volume = new GainNode(context, {gain: 10.0});
+    volume = new GainNode(context, {gain: 100.0});
 
     if (reverberatorSelected == "schroeder") {
         reverberator = new SchroederReverberatorNode(context);
         reverberator.setParameters(0.05, 0.015);
     } else if (reverberatorSelected == "brir") {
-        let brirContainer = await initRoomImpulsiveResponse(_BRIR_DEFAULT_);
+        let brirContainer = await initRoomImpulsiveResponse(hrirContainer.rate == 48000.0 ? _BRIR_48000_DEFAULT_ : _BRIR_44100_DEFAULT_);
         reverberator = new RoomReverberatorNode(context);
         reverberator.setSpatialIRContainer(brirContainer);
     }
