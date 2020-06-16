@@ -1,30 +1,7 @@
-function httpGetAsync(url, callback, responseType)
-{
-    var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function() { 
-        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-            callback(xmlHttp.response);
-        }
-    }
-    if(responseType) {
-        xmlHttp.responseType = responseType;
-    }
-    xmlHttp.open("GET", url, true); // true for asynchronous 
-    xmlHttp.send(null);
-}
-
-function callbackHRTF(responseText) {
-    hrtfManager.loadHRTF(responseText);
-    document.getElementById("dimensionsText").textContent = hrtfManager.getHRTFDimensionsText();
-    updateHRTFInfo();
-}
-
-function callbackWav(buffer) {
-    audioContext.decodeAudioData(buffer, function(buffer) {
-        userSoundBuffer = audioContext.createBuffer(2, buffer.length, audioContext.sampleRate);
-        userSoundBuffer = buffer;    
-    });
-}
+import { asyncGet } from "../../../modules/http.js";
+import { Plotter } from "./graph.js";
+import { SpatialIRContainer } from "../../../modules/spatial.js";
+import { AngularProcessorNode } from "./AngularProcessor.js";
 
 // Wrapper para el manejo de un AudioBufferSourceNode
 function myAudioBufferNode(context, options) {
@@ -65,57 +42,53 @@ function myAudioBufferNode(context, options) {
 }
 
 
-// Creo el contexto de Web Audio API que contiene mi grafo de procesamiento de sonido
-audioContext = new AudioContext({
-    sampleRate: 44100
-});
+/*********************************/
+/* Recursos de la aplicación web */
+/*********************************/
+const _WAV_URL_ = "https://shawarma-assd.github.io/resources/samples/mixfinal.wav";
+const _HRTF_URL_ = "https://shawarma-assd.github.io/resources/hrir/HRIR1HUTUBS.json";
 
-// Creo un FileReader para controlar la carga de los archivos de sonido
-// utilizando las Promises de forma asincrónica
-const fileReader = new FileReader();
+/************************/
+/* Ejecución de rutinas */
+/************************/
+document.body.onload = async function onLoad() {
+    await initAudioSystem();
+}
 
+/****************************************/
+/* Variables de procesamiento de sonido */
+/****************************************/
+var HRIRcontainer = null;
+var audioContext = null;
+var spatializer = null;
+var userSound = null;
+var userSoundBuffer = null;
+var fileReader = null;
 
-// Agreguemos una entrada proveniente de un buffer de memoria, que sera cargado con la muestra de algún .WAV del usuario
-let userSoundBuffer = null;
-let userSound = null;
-// hacemos pasos de 0.1 sec
-let step = 0;
-let startTime = null;
-
-
-
-// Creamos el objeto que va a hacer el manejo del procesamiento 3D
-var hrtfManager = new HRTFManager();
-let plotter = new Plotter('plot');
-updateHRTFInfo();
-setHRTFvalues();
-
-// Agreguemos un poco de control de volumen con un nodo de ganancia!
-gain = null;
-
-// Realizo las conexiones del sistema de procesamiento
-let hrirConvolver = null;
-connectGraph();
-
-// Variables para la animacion
+/****************************************/
+/*    Variables para la animacion       */
+/****************************************/
+var step = 0;
+var startTime = null;
+var plotter = null;
 let timeout = null;
 let animating = false;
 
-// Una vez que esta todo inicializado, solictamos los archivos de la HRTF y el sonido WAV
-httpGetAsync("https://shawarma-assd.github.io/resources/hrir/HRIR1HUTUBS.json", callbackHRTF, null);
-httpGetAsync('https://shawarma-assd.github.io/resources/samples/mixfinal.wav', callbackWav, 'arraybuffer');
+/******************************/
+/* Configuracion de callbacks */
+/******************************/
+document.getElementById("volume").onchange = event => onVolumeChange(event.target.value);
+document.getElementById("azimuth").onchange = event => onAzimuthChange(event.target.value);
+document.getElementById("elevation").onchange = event => onElevationChange(event.target.value);
+document.getElementById("offAnimationButton").onclick = event => onStopMoving(event);
+document.getElementById("animationButton").onclick = event => onStartMoving(event);
+document.getElementById("playButton").onclick = event => onPlayButton(event);
+document.getElementById("stopButton").onclick = event => onStopButton(event);
+document.getElementById("wavSelector").onchange = event => onWavLoad(event);
 
-function connectGraph() {
-    gain = new GainNode(audioContext,
-        {
-            gain: 1
-        }
-    );
-    hrirConvolver = hrtfManager.getConvolverNode();
-    hrirConvolver.connect(gain);
-    gain.connect(audioContext.destination);
-    initUserSound();
-}
+/************************/
+/* Callbacks de eventos */
+/************************/
 
 // Conecto los botones para controlar el sistema de procesamiento de sonido
 // para poder decidir cuando parar o continuar la reproducción del sonido
@@ -137,22 +110,22 @@ function onStopButton(event) {
 // el volumen que controla la amplitud de las muestras de sonido
 function onVolumeChange(currentVolume) {
     document.getElementById("volumeText").textContent = currentVolume;
-    gain.gain.value = currentVolume / 100;
+    spatializer.setVolume(currentVolume / 100);
 };
 
 // Controladores de las coordenadas de la HRTF
 function onAzimuthChange(currentAzimuth) {
-    hrtfManager.setAzimuth(currentAzimuth);
+    spatializer.setPosition(currentAzimuth, spatializer.elevation, spatializer.distance);
     updateHRTFInfo();
 };
 
 function onElevationChange(currentElevation) {
-    hrtfManager.setElevation(currentElevation);
+    spatializer.setPosition(spatializer.azimutal, currentElevation, spatializer.distance);
     updateHRTFInfo();
 };
 
 function onRadiusChange(currentRadius) {
-    hrtfManager.setRadius(Number(currentRadius));
+    spatializer.setPosition(spatializer.azimutal, spatializer.elevation, Number(currentRadius));
     updateHRTFInfo();
 };
 
@@ -167,9 +140,72 @@ function onStopMoving(event) {
     stopAnimation();
 }
 
+/*******************************/
+/* Funciones de inicialización */
+/*******************************/
+
+// initAudioSystem()
+// Inicialización de los nodos del sistema de procesamiento de audio,
+// realizando las conexiones pertinentes y dejándo todo listo para empezar
+// a funcionar.
+// ¡Atención! Esta función se encarga de ejecutar:
+//   initSoundSource(), initImpulsiveResponse() e initAudioContext()
+async function initAudioSystem() {
+    initAudioContext(44100.0);
+    await initSoundSource(_WAV_URL_);
+    await initImpulsiveResponse(_HRTF_URL_);
+
+    spatializer = new AngularProcessorNode(audioContext);
+    spatializer.setHRIRContainer(HRIRcontainer);
+    spatializer.connect(audioContext.destination);
+    plotter = new Plotter('plot');
+    updateHRTFInfo();
+    setHRTFvalues();
+}
+
+// initAudioContext()
+// Inicialización del audio context para el WebAudio API
+function initAudioContext(rate) {
+    if (audioContext == null) {
+        audioContext = new AudioContext(
+            {
+                latencyHint: 'interactive',
+                sampleRate: rate
+            }
+        );
+        audioContext.resume();
+    }
+}
+
+// initSoundSource()
+// Inicialización de la fuente de sonido, descargando el .WAV
+// y cargándolo en un AudioBufferSourceNode global para conectarlo
+// al sistema de procesamiento de sonido.
+// @param url: Dirección de la fuente de sonido .wav
+async function initSoundSource(url) {
+    let wavResponse = await asyncGet(url);
+    let wavBuffer = await wavResponse.arrayBuffer();
+    let buffer = await audioContext.decodeAudioData(wavBuffer);
+    userSoundBuffer = await audioContext.createBuffer(2, buffer.length, audioContext.sampleRate);
+    userSoundBuffer = buffer;
+    // Creo un FileReader para controlar la carga de los archivos de sonido
+    // utilizando las Promises de forma asincrónica
+    fileReader = new FileReader();
+}
+
+// initImpulsiveResponse()
+// Inicialización de las respuesta impulsivas obtenidas de la base de datos
+// para la construcción de los filtros FIR correspondientes
+// @param url: Dirección para descargar las HRTF's
+async function initImpulsiveResponse(url) {
+    let hrirResponse = await asyncGet(url);
+    let hrirJson = await hrirResponse.text();
+    HRIRcontainer = SpatialIRContainer.FromJson(JSON.parse(hrirJson));
+}
+
 function initUserSound() {
     let ret = false;
-    if(userSoundBuffer) {
+    if(userSoundBuffer && spatializer) {
         if(userSound) {
             userSound.stop();
         }
@@ -178,13 +214,17 @@ function initUserSound() {
                 loop: false
             }
         );
-
-        userSound.connect(hrirConvolver); 
+        userSound.connect(spatializer.input()); 
         userSound.setBuffer(userSoundBuffer);
         ret = true;
     }
     return ret;
 }
+
+
+/*******************************/
+/* Funciones de la animacion   */
+/*******************************/
 
 function initAnimation(event) {
     let ret = false;
@@ -196,10 +236,9 @@ function initAnimation(event) {
         window.clearInterval(timeout);
         timeout = null;
     }
-    if(initUserSound() && hrtfManager.HRTFReady()) {
+    if(initUserSound() && spatializer.container) {
         userSound.start();
-        hrtfManager.setAzimuth(0);
-        hrtfManager.setElevation(0);
+        spatializer.setPosition(0, 0, spatializer.distance);
         animating = true;
         // hacemos pasos de 0.1 sec
         step = 1/10.0*1000;
@@ -214,7 +253,6 @@ function initAnimation(event) {
     }
     return ret;
 }
-
 
 function stopAnimation() {
     if(animating) {
@@ -253,90 +291,88 @@ function animation() {
     let elapsed = audioContext.currentTime - startTime;
     // muevo del centro a la izquierda por 1 sec
     if ((elapsed >= 3) && (elapsed < 4)) {
-        hrtfManager.setAzimuth( hrtfManager.getAzimuth() + step*90/1000 );
+        spatializer.setPosition( spatializer.azimutal + step*90/1000, spatializer.elevation, spatializer.distance);
     }
     // de la izquierda a la derecha en 1 sec
     else if ((elapsed >= 4) && (elapsed <= 5)) {
-        hrtfManager.setAzimuth(hrtfManager.getAzimuth() - step*180/1000);    
+        spatializer.setPosition( spatializer.azimutal - step*180/1000, spatializer.elevation, spatializer.distance);
     }
     // muevo de la derecha a la izquierda por 2 sec
     else if ((elapsed >= 6) && (elapsed < 8)) {
-        hrtfManager.setAzimuth( hrtfManager.getAzimuth() + step*90/1000 );
+        spatializer.setPosition( spatializer.azimutal + step*90/1000, spatializer.elevation, spatializer.distance);
     }
     // de la izquierda a la derecha en 1 sec
     else if ((elapsed >= 8) && (elapsed <= 9)) {
-        hrtfManager.setAzimuth(hrtfManager.getAzimuth() - step*180/1000);
+        spatializer.setPosition( spatializer.azimutal - step*180/1000, spatializer.elevation, spatializer.distance);
     }
     // del medio para abajo en 1 sec
     else if ((elapsed >= 11) && (elapsed <= 12)) {
-        hrtfManager.setElevation(hrtfManager.getElevation() - step*70/1000);        
+        spatializer.setPosition( spatializer.azimutal, spatializer.elevation - step*70/1000, spatializer.distance);  
     }
     // de derecha a izquierda todo por abajo
     else if ((elapsed >= 14) && (elapsed <= 15)) {
-        hrtfManager.setAzimuth(hrtfManager.getAzimuth() - step*180/1000);
+        spatializer.setPosition( spatializer.azimutal - step*180/1000, spatializer.elevation, spatializer.distance);
     }
     // sube
     else if ((elapsed >= 18.5) && (elapsed <= 20)) {
-        hrtfManager.setElevation(hrtfManager.getElevation() + step*140/1.5/1000); 
+        spatializer.setPosition( spatializer.azimutal, spatializer.elevation + step*140/1.5/1000, spatializer.distance);  
     }
     // baja
     else if ((elapsed >= 21-1.1*step/1000) && (elapsed <= 21)) {
-        hrtfManager.setElevation(-70); 
+        spatializer.setPosition( spatializer.azimutal, -70, spatializer.distance);  
     }
     // sube
     else if ((elapsed >= 21) && (elapsed <= 22)) {
-        hrtfManager.setElevation(hrtfManager.getElevation() + step*140/1000); 
+        spatializer.setPosition( spatializer.azimutal, spatializer.elevation + step*140/1000, spatializer.distance);  
     }
     // baja
     else if ((elapsed >= 23-1.1*step/1000) && (elapsed <= 23)) {
-        hrtfManager.setElevation(-70); 
+        spatializer.setPosition( spatializer.azimutal, -70, spatializer.distance);   
     }
     // sube
     else if ((elapsed >= 23.5) && (elapsed <= 24.5)) {
-        hrtfManager.setElevation(hrtfManager.getElevation() + step*140/1000); 
+        spatializer.setPosition( spatializer.azimutal, spatializer.elevation + step*140/1000, spatializer.distance);  
     }
     // baja
     else if ((elapsed >= 25.5-1.1*step/1000) && (elapsed <= 25.5)) {
-        hrtfManager.setElevation(-70); 
+        spatializer.setPosition( spatializer.azimutal, -70, spatializer.distance);   
     }
     // sube
     else if ((elapsed >= 27-1.1*step/1000) && (elapsed <= 27)) {
-        hrtfManager.setElevation(70); 
+        spatializer.setPosition( spatializer.azimutal, +70, spatializer.distance);   
     }
     // baja
     else if ((elapsed >= 28-1.1*step/1000) && (elapsed <= 28)) {
-        hrtfManager.setElevation(-70); 
+        spatializer.setPosition( spatializer.azimutal, -70, spatializer.distance);   
     }
     // sube
     else if ((elapsed >= 29-1.1*step/1000) && (elapsed <= 29)) {
-        hrtfManager.setElevation(70); 
+        spatializer.setPosition( spatializer.azimutal, +70, spatializer.distance);   
     }
 }
 
 function updateHRTFInfo() {
-    document.getElementById("azimuthText").textContent = hrtfManager.getAzimuth();
-    document.getElementById("elevationText").textContent = hrtfManager.getElevation();    
-    document.getElementById("radiusText").textContent = hrtfManager.getRadius();
-    document.getElementById("positionText").textContent = hrtfManager.getPositionText();
-    plotter.plot(hrtfManager.getFilters());
+    document.getElementById("azimuthText").textContent = spatializer.azimutal;
+    document.getElementById("elevationText").textContent = spatializer.elevation;    
+    document.getElementById("radiusText").textContent = spatializer.distance;
+    document.getElementById("positionText").textContent = spatializer.getPositionText();
+    let resp = spatializer.getImpulseResponses();
+    plotter.plot([resp.getChannelData(0), resp.getChannelData(1)]);
 }
 
 function setHRTFvalues() {
-    document.getElementById("azimuth").value = hrtfManager.getAzimuth();
-    document.getElementById("elevation").value = hrtfManager.getElevation();    
-    document.getElementById("radius").value = hrtfManager.getRadius();
+    document.getElementById("azimuth").value = spatializer.azimutal;
+    document.getElementById("elevation").value = spatializer.elevation;    
 }
 
 function disableSliders() {
     document.getElementById("azimuth").disabled = true;
     document.getElementById("elevation").disabled = true;    
-    document.getElementById("radius").disabled = true;
 }
 
 function enableSliders() {
     document.getElementById("azimuth").disabled = false;
     document.getElementById("elevation").disabled = false;    
-    document.getElementById("radius").disabled = false;
 }
 
 
@@ -352,6 +388,7 @@ function onWavLoad(event) {
             audioContext.decodeAudioData(event.target.result, function(buffer) {
                     userSoundBuffer = audioContext.createBuffer(2, buffer.length, audioContext.sampleRate);
                     userSoundBuffer = buffer;
+                    initUserSound();
                 }
             );
         };

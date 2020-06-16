@@ -1,7 +1,44 @@
+export { Plotter };
+
 /*
  * @author dhuertas
  * @email huertas.dani@gmail.com
  */
+class Plotter {
+  constructor(name) {
+
+      // https://github.com/dhuertas/graph.js/tree/master 
+      this.plot = function (graphs) {
+          this.HRIRgraph.clear(this.graphOptions);
+          for (var i = 0; i < graphs.length; i++) {
+              var time = [], y = [];
+              if (graphs[i]) {
+                  for (var t = 0; t < graphs[i].length; t++) {
+                      time.push(t);
+                      y.push(graphs[i][t]);
+                  }
+
+                  this.HRIRgraph.plot(y, time);
+              }
+          }
+      };
+
+      // Configuracion de la libreria para graficar
+      this.graphOptions = {
+          appendTo: name,
+          canvasWidth: 800,
+          canvasHeight: 800 / Math.sqrt(2),
+          title: "Respuesta impulsiva de cada oído",
+          xAxisTitle: "t [samples]",
+          yAxisTitle: "Amplitud"
+      };
+
+      // Creamos el grafico de la HRIR
+      this.HRIRgraph = new Graph(this.graphOptions);
+  }
+}
+
+
 
 var Graph = (function() {
 
