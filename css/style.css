@@ -1,0 +1,69 @@
+body {
+    background-image: url("../img/background_2.jpg");
+    background-repeat: no-repeat;
+    background-color: black;
+    background-size: 70%;
+    background-position-x: left;
+}
+
+#intro {
+    background-image: url("../img/background_1.jpg");
+    color: rgb(190, 190, 190);
+    text-align: center;
+    text-justify: distribute;
+    position: absolute;
+    top: 20%;
+    left: 59%;
+}
+
+#intro-button {
+    display: inline-block;
+    padding: 16px 32px;
+    color: white;
+    border: none;
+    background-color: red;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+#intro-title {
+    text-rendering: geometricPrecision;
+    -webkit-font-smoothing: antialiased;
+    color: white;
+    font-family: BebasNeue;
+    font-size: 100px;
+}
+
+#intro-message {
+    -webkit-font-smoothing: antialiased;
+    color: white;
+    font-family: Neufreit;
+    font-size: 23px;
+    width: 480px;
+}
+
+@font-face {
+    font-family: BebasNeue;
+    src: url("../webfonts/BebasNeue-Regular.otf");
+}
+
+@font-face {
+    font-family: Bebas;
+    src: url("../webfonts/Bebas-Regular.otf");
+}
+
+@font-face {
+    font-family: Akira;
+    src: url("../webfonts/Akira.otf");
+}
+
+@font-face {
+    font-family: Septacharge;
+    src: url("../webfonts/Septacharge.otf");
+}
+
+@font-face {
+    font-family: Neufreit;
+    src: url("../webfonts/Neufreit-ExtraBold.otf");
+}
