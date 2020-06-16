@@ -1,7 +1,7 @@
 import { asyncGet } from "../../../modules/http.js";
 import { Plotter } from "./graph.js";
 import { SpatialIRContainer } from "../../../modules/spatial.js";
-import { AngularProcessorNode } from "../../../modules/sound.js";
+import { AngularProcessorNode } from "./AngularProcessor.js";
 
 // Wrapper para el manejo de un AudioBufferSourceNode
 function myAudioBufferNode(context, options) {

@@ -1,4 +1,4 @@
-import { SpatialNode } from "./SpatialNode.js"
+import { SpatialNode } from "../../../modules/SpatialNode.js"
 
 // AngularProcessorNode
 // Representa el sistema procesador de sonido espacial, que se construye con la configuración
