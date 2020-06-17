@@ -11,19 +11,20 @@
                 <select class="control-style" id="database"></select>
                 <select class="control-style" id="sample"></select>
                 <select class="control-style" id="reverberator">
-                    <option value="schroeder">Reverberador Schroeder</option>
-                    <option value="brir">Reverberador BRIR</option>
+                    <option value="schroeder">Schroeder</option>
+                    <option value="brir">BRIR</option>
                 </select>
                 <button class="control-style" id="run">Cargar</button>
                 <button class="control-style" id="play">Reproducir</button>
                 <button class="control-style" id="stop">Parar</button>
                 <button class="control-style" id="exit" onclick="location.href='../../../index.html'">Salir</button>
             </div>
+            <br>
             <span id="status"></span>
-            <ul id="recordings"></ul>
-        </div>
         
-        <div id="recordinglist">
+            <div class="scrollable-list">
+                <ul style="list-style: none;" id="recordings"></ul>
+            </div>
         </div>
         
         <script src="../../../modules/recorder.js"></script>

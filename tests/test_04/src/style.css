@@ -29,10 +29,6 @@ span {
     visibility: hidden;
 }
 
-#exit {
-    float: right;
-}
-
 #status {
     font-family: BebasNeue;
     font-size: 20px;

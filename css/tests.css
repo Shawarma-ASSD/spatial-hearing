@@ -3,6 +3,13 @@ body {
     background-size: 75%;
 }
 
+.scrollable-list {
+    vertical-align: top;
+    height: 200px;
+    width: 400px;
+    overflow-y: scroll;
+}
+
 .button-bar {
     text-align: center;
     padding: 10px;
@@ -29,8 +36,6 @@ body {
     font-family: Bebas;
     flex: 1 1 auto;
     height: 45px;
-    margin: 5px;
-    padding: 10px;
     text-transform: uppercase;
     transition: 0.5s;
     background-size: 200% auto;
@@ -159,4 +164,7 @@ input[type=range] {
 
 audio {
     vertical-align: middle;
+    width: 190px;
+    height: 40px;
+    margin: 5px;
 }
