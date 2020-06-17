@@ -50,27 +50,9 @@ const _HRTF_ = [
 ];
 const _WAV_ = [
     {
-        name: "Discurso III (Mujer)",
-        supported: ["ari", "chedar"],
-        url: "https://shawarma-assd.github.io/resources/samples/que_es_esto_48000.wav",
-        buffer: null
-    },
-    {
-        name: "Discurso III (Mujer)",
-        supported: ["hutubs"],
-        url: "https://shawarma-assd.github.io/resources/samples/que_es_esto_44100.wav",
-        buffer: null
-    },
-    {
-        name: "Discurso (Hombre)",
+        name: "Discurso I (Hombre)",
         supported: ["ari", "chedar"],
         url: "https://shawarma-assd.github.io/resources/samples/indian_48000.wav",
-        buffer: null
-    },
-    {
-        name: "Discurso II (Mujer)",
-        supported: ["hutubs"],
-        url: "https://shawarma-assd.github.io/resources/samples/female.wav",
         buffer: null
     },
     {
@@ -83,6 +65,24 @@ const _WAV_ = [
         name: "Discurso I (Mujer)",
         supported: ["ari", "chedar"],
         url: "https://shawarma-assd.github.io/resources/samples/woman_48000.wav",
+        buffer: null
+    },
+    {
+        name: "Discurso II (Mujer)",
+        supported: ["hutubs"],
+        url: "https://shawarma-assd.github.io/resources/samples/female.wav",
+        buffer: null
+    },
+    {
+        name: "Discurso III (Mujer)",
+        supported: ["ari", "chedar"],
+        url: "https://shawarma-assd.github.io/resources/samples/que_es_esto_48000.wav",
+        buffer: null
+    },
+    {
+        name: "Discurso III (Mujer)",
+        supported: ["hutubs"],
+        url: "https://shawarma-assd.github.io/resources/samples/que_es_esto_44100.wav",
         buffer: null
     }
 ];
