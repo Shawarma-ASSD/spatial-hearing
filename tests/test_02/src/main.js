@@ -59,6 +59,8 @@ function onReset(event) {
     itdRange.value = 0;
     iidText.textContent = 0;
     itdText.textContent = 0;
+    setITD(0);
+    setIID(0);
 };
 
 // onFrequencyChange()
@@ -85,10 +87,7 @@ function onITDChange(event) {
     // positivo o negativo para indicar si se aplica el retardo
     // del lado derecho o izquierdo respectivamente.
     let currentITD = event.target.value;
-    let delay = 1.5e-3 * (Math.abs(currentITD) / 100);
-    delays[0].delayTime.value = currentITD > 0 ? delay : 0;
-    delays[1].delayTime.value = currentITD < 0 ? delay : 0;
-    itdText.textContent = delay;
+    setITD(currentITD);
 };
 
 // onIIDChange
@@ -99,16 +98,31 @@ function onIIDChange(event) {
     // de 0dB a 10dB. Según si es negativo o positivo, la atenuación se aplica
     // sobre el lado derecho o izquierdo respectivamente.
     let currentIID = event.target.value;
-    let dbAttenuation = (10) * (Math.abs(currentIID) / 100);
-    let attenuation = Math.pow(10, -dbAttenuation / 20);
-    gains[0].gain.value = currentIID > 0 ? attenuation : 1;
-    gains[1].gain.value = currentIID < 0 ? attenuation : 1;
-    iidText.textContent = dbAttenuation;
+    setIID(currentIID);
 };
 
 /*******************************/
 /* Funciones de inicialización */
 /*******************************/
+
+// setITD
+// Actualiza el valor de la ITD
+function setITD(itd) {
+    let delay = 1.5e-3 * (Math.abs(itd) / 100);
+    delays[0].delayTime.value = itd > 0 ? delay : 0;
+    delays[1].delayTime.value = itd < 0 ? delay : 0;
+    itdText.textContent = delay;
+}
+
+// setIID
+// Actualiza el valor de la IID
+function setIID(iid) {
+    let dbAttenuation = (10) * (Math.abs(iid) / 100);
+    let attenuation = Math.pow(10, -dbAttenuation / 20);
+    gains[0].gain.value = iid > 0 ? attenuation : 1;
+    gains[1].gain.value = iid < 0 ? attenuation : 1;
+    iidText.textContent = dbAttenuation;
+}
 
 // initAudioSystem
 // Inicialización del sistema de sonido
