@@ -122,6 +122,7 @@ document.getElementById('stop').onclick = onStop;
 document.getElementById("volume").onchange = event => onVolumeChange(event.target.value);
 document.getElementById("distance").onchange = event => onDistanceChange(event.target.value);
 document.getElementById("reverberator").onchange = event => onBRIRSelected(event.target.value);
+document.getElementById("azimuth").onchange = event => onAzimuthChange(event.target.value);
 
 /****************************************/
 /* Variables de procesamiento de sonido */
@@ -234,6 +235,11 @@ function onDistanceChange(currentDistance) {
     reverberator?.setPosition(reverberator.azimutal, reverberator.elevation, Number(currentDistance));
 };
 
+// Controladores de las coordenadas de la HRTF
+function onAzimuthChange(currentAzimuth) {
+    reverberator?.setPosition(currentAzimuth, reverberator.elevation, reverberator.distance);
+    document.getElementById("azimuthText").textContent = reverberator.azimutal;
+};
 
 /*******************************/
 /* Funciones de inicialización */
@@ -308,6 +314,7 @@ function disableControl(){
     document.getElementById('run').disabled = false;
     document.getElementById('volume').disabled = true;
     document.getElementById('distance').disabled = true;
+    document.getElementById("azimuth").disabled = true;
 }
 
 //enableControl()
@@ -318,4 +325,5 @@ function enableControl(){
     document.getElementById('run').disabled = false;
     document.getElementById('volume').disabled = false;
     document.getElementById('distance').disabled = false;
+    document.getElementById("azimuth").disabled = false;
 }
