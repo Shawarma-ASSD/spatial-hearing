@@ -16,9 +16,6 @@
                 <p>
                     El efecto resultante de su superposición da origen a la reverberación, donde en el resultado se puede evidenciar el hecho de que cada onda reflejada recorre un camino diferente y eso provoca que lleguen en diferentes instantes. 
                 </p>
-                <div>
-                    <img src="../resources/reverb.png"></img>
-                </div>
                 <p>
                     Al agregar reverberación al sistema, se logra mejorar la percepción de profundidad o distancia en el sonido. Sin esta y utilizando únicamente la HRTF se encuentran inconvenientes para externalizar la fuente de sonido respecto de la posición egocéntrica.
                     Finalmente se utilizan 2 formas de simular reberveración, por medio de las BRIR y con el reverberador de Schroeder.
@@ -37,26 +34,53 @@
                 <p>  
                     Otra forma de emular la reverberación es por medio del reverberador de Schroeder. Este presenta la ventaja de que se hace digitalmente y no se requieren de bases de datos para su implementación. Se presenta a continuación un esquema del reverberador implementado.
                 </p>
-                <div>
-                    <img src="../resources/reverberator_schroeder.png"></img>
-                </div>
         </div>
         
 
         <div id="toolbar">
             <h1> Prueba de sonido</h1>
             <div>
-                <select id="reverberator"></select>
-                <select id="sample"></select>
-                <button id="run">Cargar</button>
-                <b><span>Volumen: </span></b> <span id="volumeText">100</span> <span>%</span>
-                <input type="range" id="volume" value="100" min="0" max="100" step="1"></input>
-                <b><span>Distancia: </span></b> <span id="distanceText">0</span> <span>%</span>
-                <input type="range" id="distance" value="1" min="1" max="4" step="0.01"></input>
-                <b><span>Azimuth: </span></b> <span id="azimuthText">0</span> <span>&deg</span>
-                <input type="range" id="azimuth" value="0" min="0" max="360" step="1" disabled></input><br>
-                <button id="play" disabled  class="play-button"></button>
-                <button id="stop" disabled  class="stop-button"></button>
+                <div style="text-align: center;">
+                    <select class="control-style" id="reverberator"></select>
+                    <select class="control-style" id="sample"></select>
+                    <button class="control-style" id="run">Cargar</button>
+                </div>
+                <br>
+                <br>
+                <div style="text-align: center;">
+                    <table>
+                        <tr>
+                            <th>
+                                <div>
+                                    <b><span>Volumen: </span></b> <span class="valueText" id="volumeText">100</span> <span>%</span>
+                                    <br>
+                                    <input type="range" id="volume" value="100" min="0" max="100" step="1"></input>
+                                </div>
+                            </th>
+                            <th>
+                                <div>
+                                    <b><span>Distancia: </span></b> <span class="valueText" id="distanceText">0</span> <span>%</span>
+                                    <br>
+                                    <input type="range" id="distance" value="1" min="1" max="4" step="0.01"></input>
+                                </div>
+                            </th>
+                            <th>
+                                <div>
+                                    <b><span>Azimuth: </span></b> <span class="valueText" id="azimuthText">0</span> <span>&deg</span>
+                                    <br>
+                                    <input type="range" id="azimuth" value="0" min="0" max="360" step="1" disabled></input><br>
+                                </div>
+                            </th>
+                        </tr>
+                    </table>
+                </div>
+                <br>
+                <br>
+                <div style="text-align: center;">
+                    <button class="home-button" id="homeButton" onclick="location.href='../../../index.html';"></button>
+                    <button id="play" disabled  class="play-button"></button>
+                    <button id="stop" disabled  class="stop-button"></button>
+                </div>
             </div>
             <span id="status"></span>
             <ul id="recordings"></ul>
