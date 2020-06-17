@@ -2,39 +2,49 @@
 
 <html>
     <head>
-        <title>Prueba 03</title>
+        <meta charset="UTF-8"/>
+        <link rel="stylesheet" href="../../../css/tests.css">
+        <title>Espacializacion</title>
     </head>
 
     <body>
         <div class="cell">
-            <h1>Prueba 03: Espacializacion del sonido en tiempo real</h1>
-            <img src="../resources/diagrama.png" width="500"></img>
+            <h1>Head Related Transfer Function</h1>
+            <img src="../resources/diagrama.png" width="350"></img>
         </div>
         
-        <div class="cell">
-            <h2>1. Carga de archivos </h2>
-            <p>
-                Primero, el programa carga un archivo de sonido, se carga en memoria y es utilizado como <b>entrada</b> del sistema de procesamiento.<br>
-                Luego carga un archivo JSON con una HRTF, es utilizado como <b>filtro</b> del sistema de procesamiento.
-            </p>
-            <b><span>Volumen: </span></b> <span id="volumeText">100</span> <span>%</span>
-            <input type="range" id="volume" value="100" min="0" max="500" step="1"></input>
-        </div>        
+        <p> 
+            Se muestra el efecto de la función transferencia relacionada con la cabeza (HRTF), la cual modela el efecto de la fisonomía humana sobre
+            el sonido para cada posición del espacio. Es decir, al pasar el sonido por este filtro, se busca que sufra los mismos cambios
+            que sufre en la realidad debido a múltiples efectos, como son las reflexiones con el torso, la oreja y el interior del canal
+            auditivo. <br>
+            Como estos cambios dependen de la posición de origen del sonido, al cambiar los valores de la HRTF percibimos que
+            proviene de un lugar distinto. En este caso se usa la HRTF de la base de datos HUTUBS, que provee valores de la función
+            para múltiples posiciones angulares, con un mismo radio. <br>
+        </p>
+        <p> Abajo aparecerán las grabaciones que se vayan generando a lo largo del programa:</p>
+        <ul id="recordings"></ul>
 
         <div class="cell">
-            <h2>2. Seleccion de las coordenadas</h2>
+            <h2>Seleccion de las coordenadas</h2>
             <p>
                 Seleccionar que coordenadas utilizar para la HRTF y se buscara la mas cercana.
             </p>
-            <b><span>Azimuth: </span></b> <span id="azimuthText">0</span> <span>°</span>
+            <b><span>Azimuth: </span></b> <span id="azimuthText">0</span> <span>&deg</span>
             <input type="range" id="azimuth" value="0" min="0" max="360" step="1"></input>
-            <b><span>Elevation: </span></b> <span id="elevationText">0</span> <span>°</span>
+            <b><span>Elevation: </span></b> <span id="elevationText">0</span> <span>&deg</span>
             <input type="range" id="elevation" value="0" min="-90" max="90" step="1"></input>
             <b><span>Radius: </span></b> <span id="radiusText">1</span> <span>m</span>
             <br>
-            <button id="animationButton"> Start moving sound source </button>
-            <button id="offAnimationButton"> Stop moving </button>
+            <b><span>Volumen: </span></b> <span id="volumeText">100</span> <span>%</span> 
+            <input type="range" id="volume" value="100" min="0" max="500" step="1"></input> <br>    
+            <button id="animationButton"> Start moving sound </button>
+            <button id="offAnimationButton"> Stop moving sound</button> 
             <br>
+            <div>
+                <button class="play-button" id="playButton"></button>
+                <button class="stop-button" id="stopButton"></button>
+            </div>    
         </div>
 
         <div class="cell">
@@ -42,22 +52,11 @@
             <b><span>Posicion: </span></b> <span id="positionText"></span> <br>
         </div>
 
-        <div id="plot"></div>
+        <div id="plot" style="text-align:center"><p style="text-align:center">Respuesta impulsiva de cada oido</p></div>
 
-        <div class="cell">
-            <h2>Control de reproduccion</h2>
-            <p>
-                Con los siguientes botones se permite controlar la reproduccion en tiempo real, pausando y continuando el procesamiento
-                continuo de las señales a lo largo del grafo creado.
-            </p>
-            <div>
-                <button id="playButton">Reproducir</button>
-                <button id="stopButton">Pausar</button>
-            </div>
-            <p> Si lo desea, puede cargar un archivo WAV de sonido distinto. </p>
-            <input type="file" id="wavSelector"></input>
-        </div>
-        <script> </script>
+        <p> Si lo desea, puede cargar un archivo WAV de sonido distinto. </p>
+        <input type="file" id="wavSelector"></input>
+        <script src="../../../modules/recorder.js"></script>
         <script type="module" src="main.js"></script>
     </body>
 </html>

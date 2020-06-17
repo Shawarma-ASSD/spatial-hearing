@@ -3,8 +3,7 @@
 <html> 
     <head>
         <title>Prueba 02</title>
-
-        <script src="main.js"></script>
+        <link rel="stylesheet" href="css/test.css">
     </head>
 
     <body>
@@ -39,12 +38,12 @@
             <div>
                 <span><b>Frecuencia</b> </span> <span id="frequencyText">100</span> <span>Hz</span>
                 <br>
-                <input style="width: 500px;" type="range" id="frequency" min="100" max="2000" step="1" value="100" onchange="onFrequencyChange(this.value)"></input>
+                <input style="width: 500px;" type="range" id="frequency" min="100" max="2000" step="1" value="100"></input>
             </div>
             <div>
                 <span><b>Intensidad</b> </span> <span id="amplitudeText">0</span> <span>%</span>
                 <br>
-                <input style="width: 500px;" type="range" id="amplitude" value="100" min="0" max="100" value="0" onchange="onAmplitudeChange(this.value)"></input>
+                <input style="width: 500px;" type="range" id="amplitude" value="100" min="0" max="100" value="0"></input>
             </div>
         </div>
 
@@ -64,9 +63,11 @@
 
         <div class="cell">
             <h2>Controles generales</h2>
-            <button id="playButton" onclick="onPlayButton(event)">Reproducir</button>
-            <button id="stopButton" onclick="onStopButton(event)">Parar</button>
-            <button id="resetButton" onclick="onResetButton(event)">Reiniciar posición</button>
+            <button id="playButton">Reproducir</button>
+            <button id="stopButton">Parar</button>
+            <button id="resetButton">Reiniciar posición</button>
         </div>
+
+        <script src="main.js"></script>
     </body>
 </html>

@@ -28,9 +28,8 @@ class Plotter {
           appendTo: name,
           canvasWidth: 800,
           canvasHeight: 800 / Math.sqrt(2),
-          title: "Respuesta impulsiva de cada oído",
-          xAxisTitle: "t [samples]",
-          yAxisTitle: "Amplitud"
+          yAxisColor: "#FFF",
+          xAxisColor: "#FFF"
       };
 
       // Creamos el grafico de la HRIR

@@ -80,16 +80,18 @@ export class SpatialConvolverNode extends SpatialNode {
     // @param elevation: Elevación de la nueva posición
     // @param distance: Distancia de la nueva posición
     setPosition(azimutal, elevation, distance) {
-        super.setPosition(azimutal, elevation, distance);
-        if (azimutal !== null && elevation !== null && distance !== null) {
-            if (this.container !== null){
-                if (this.isAvailable()) {
-                    this.currentTime = this.context.currentTime + this.transitionTime;
-                    this.faders[this.currentConvolver].gain.linearRampToValueAtTime(0, this.currentTime);
-                    this.currentConvolver = this.currentConvolver == 0 ? 1 : 0;
-                    this.faders[this.currentConvolver].gain.linearRampToValueAtTime(1, this.currentTime);
-                    this.convolvers[this.currentConvolver].buffer = this.container.closestBuffer(azimutal, elevation, distance);
-                    return true;
+        if (azimutal !== this.azimutal || elevation !== this.elevation || distance !== this.distance) {
+            super.setPosition(azimutal, elevation, distance);
+            if (azimutal !== null && elevation !== null && distance !== null) {
+                if (this.container !== null){
+                    if (this.isAvailable()) {
+                        this.currentTime = this.context.currentTime + this.transitionTime;
+                        this.faders[this.currentConvolver].gain.linearRampToValueAtTime(0, this.currentTime);
+                        this.currentConvolver = this.currentConvolver == 0 ? 1 : 0;
+                        this.faders[this.currentConvolver].gain.linearRampToValueAtTime(1, this.currentTime);
+                        this.convolvers[this.currentConvolver].buffer = this.container.closestBuffer(azimutal, elevation, distance);
+                        return true;
+                    }
                 }
             }
         }

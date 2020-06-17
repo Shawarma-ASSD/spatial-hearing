@@ -10,6 +10,7 @@ export class AngularProcessorNode extends SpatialNode {
 
         // Cargando contexto y nodos del sistema procesador de sonido
         this.volume = new GainNode(this.context);
+        this.bufferOut = new GainNode(this.context);
 
         // Control de cross fading entre HRIRs al alternar posiciones
         this.currentTime = null;
@@ -28,6 +29,8 @@ export class AngularProcessorNode extends SpatialNode {
         this.volume.connect(this.convolvers[1]);
         this.convolvers[0].connect(this.faders[0]);
         this.convolvers[1].connect(this.faders[1]);
+        this.faders[0].connect(this.bufferOut);
+        this.faders[1].connect(this.bufferOut);
     }
 
     // isAvailable
@@ -45,15 +48,13 @@ export class AngularProcessorNode extends SpatialNode {
     // connect
     // Conecta la salida del SpatialProcessorNode
     connect(node) {
-        this.faders[0].connect(node);
-        this.faders[1].connect(node);
+        this.bufferOut.connect(node);
     }
     
     // disconnect
     // Desconecta la salida del SpatialProcessorNode
     disconnect(node) {
-        this.faders[0].disconnect(node);
-        this.faders[1].disconnect(node);
+        this.bufferOut.disconnect(node);
     }
 
     // input
@@ -61,6 +62,13 @@ export class AngularProcessorNode extends SpatialNode {
     input() {
         return this.volume;
     }
+
+    // output
+    // Expone la salida del nodo procesador de sonido espacial
+    output() {
+        return this.bufferOut;
+    }
+
 
     // setHRIRContainer
     // Configura el container que caracteriza las repuesta HRTF usadas

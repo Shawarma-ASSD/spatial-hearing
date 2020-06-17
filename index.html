@@ -1,21 +1,67 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Shawarma Team</title>
+        <meta http-equiv=”Content-Type” content=”text/html; charset=ISO-8859-1″ />
+        <link rel="stylesheet" href="css/style.css">
     </head>
-
     <body>
-        <h1>Trabajo Práctico de Investigación</h1>
-        <p>
-            Con los siguientes links se pueden redirigir a cada una de las pruebas activas:
-        </p>
+        <img id="intro-image" src="img/background_2_v2.png"></img>
+        <div class="slideshow-container">
 
-        <ol>
-            <li><a href="tests/test_01/src/prueba_01.html">Reproducción de sonido general</a></li>
-            <li><a href="tests/test_02/src/prueba_02.html">Lateralización con IID y ITD</a></li>
-            <li><a href="tests/test_03/src/prueba_03.html">Movimiento de fuente de sonido con HRTF</a></li>
-            <li><a href="tests/test_04/src/prueba_04.html">Cambio de la distancia de una fuente de sonido</a></li>
-            <li><a href="tests/test_05/src/prueba_05.html">Reverberacion con BRIR</a></li>
-        </ol>
+            <div class="slides">
+                <h1 class="test-title">Diferencias interaurales</h1>
+                <p class="test-message">
+                    La teoria duplex del Baron Rayleigh explica la capacidad de los seres humanos de localizar fuentes de sonido para determinadas direcciones,
+                    a traves del concepto de las diferencias interaurales. La posicion azimutal de una fuente de sonido respecto del oyente establece el camino que
+                    debe recorrer hasta cada oido la onda provocando una diferencia de tiempo (ITD) y de intensidad (IID) con la que el sonido llega a los mismos.
+                    Asi, el sistema auditivo del ser humano es capaz de predecir la ubicacion de la fuente de sonido.
+                </p>
+                <br>
+                <button class="intro-button" onclick="location.href='tests/test_02/src/prueba_02.html'"> IR A PRUEBA </button>
+            </div>
+        
+            <div class="slides">
+                <h1 class="test-title">Head Related Transfer Function</h1>
+                <p class="test-message"> 
+                    Para tener un modelo mas real, se simula el efecto que realiza la fisonomia humana sobre el sonido. Para ello se utiliza
+                    la Head Related Transfer Function (HRTF), que describe el filtrado espectral el sonido dependiente de la posicion.
+               </p>
+                <br>
+                <button class="intro-button" onclick="location.href='tests/test_03/src/prueba_03.html'"> IR A PRUEBA </button>
+            </div>
+        
+            <div class="slides">
+                <h1 class="test-title">Distancia y Reverberacion</h1>
+                <p class="test-message"> 
+                    La reverberacion es un fenomeno que se da debido a la reflexion del sonido en las superficies de la habitacion donde nos encontramos.
+Su presencia cambia notablemente la nocion de espacialidad, por lo que para tener una simulacion mas realista es necesario modelarla.
+Una forma de modelar este fenomeno es mediante modelos matematicos que buscan reproducir lo que ocurre fisicamente, para ello se
+simula el reverberador de Schroeder. Otra forma es mediante respuestas impulsivas binaurales (BRIR) medidas de ambientes, las cuales
+permiten trasladarse a una habitacion en particular.
+                </p>
+                <br>
+                <button class="intro-button" onclick="location.href='CHARLIE_PUTH'"> IR A PRUEBA </button>
+            </div>
+        
+            <div class="slides">
+                <h1 class="test-title">LIVE TESTINGS</h1>
+                <p class="test-message"> 
+                    Por ultimo, se unifican todas las simulaciones previas en un modelo que permite ubicar un sonido en cualquier punto del espacio.
+                </p>
+                <br>
+                <button class="intro-button" onclick="location.href='tests/test_04/src/prueba_04.html'"> IR A PRUEBA </button>
+            </div>
+        
+            <br>
+            <br>
+            
+            <div style="text-align:center">
+                <span class="dot" onclick="currentSlide(1)"></span>
+                <span class="dot" onclick="currentSlide(2)"></span>
+                <span class="dot" onclick="currentSlide(3)"></span>
+                <span class="dot" onclick="currentSlide(4)"></span>
+            </div>
+        </div>
+        <script src="./index.js"></script>
     </body>
 </html>

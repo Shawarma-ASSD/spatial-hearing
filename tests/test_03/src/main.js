@@ -64,6 +64,7 @@ var spatializer = null;
 var userSound = null;
 var userSoundBuffer = null;
 var fileReader = null;
+var recorder = null;
 
 /****************************************/
 /*    Variables para la animacion       */
@@ -90,6 +91,24 @@ document.getElementById("wavSelector").onchange = event => onWavLoad(event);
 /* Callbacks de eventos */
 /************************/
 
+// onExportWav
+// Creo un elemento de reproducción y descarga del .wav grabado
+function onExportWav(blob) {
+    var url = URL.createObjectURL(blob);
+    var li = document.createElement('li');
+    var au = document.createElement('audio');
+    var hf = document.createElement('a');
+    au.controls = true;
+    au.src = url;
+    hf.href = url;
+    hf.download = new Date().toISOString() + '.wav';
+    hf.innerHTML = 'Download .WAV';
+    li.appendChild(au);
+    li.appendChild(hf);
+    document.getElementById('recordings').appendChild(li);
+}
+
+
 // Conecto los botones para controlar el sistema de procesamiento de sonido
 // para poder decidir cuando parar o continuar la reproducción del sonido
 function onPlayButton(event) {
@@ -99,11 +118,15 @@ function onPlayButton(event) {
     }
     audioContext.resume();
     resumeAnimation();
+    recorder?.clear();
+    recorder?.record();
 };
 
 function onStopButton(event) {
     audioContext.suspend();
     pauseAnimation();
+    recorder?.stop();
+    recorder?.exportWAV(onExportWav);
 };
 
 // Agrego un controlador del volumen, que modifica de forma abrupta
@@ -158,6 +181,7 @@ async function initAudioSystem() {
     spatializer = new AngularProcessorNode(audioContext);
     spatializer.setHRIRContainer(HRIRcontainer);
     spatializer.connect(audioContext.destination);
+
     plotter = new Plotter('plot');
     updateHRTFInfo();
     setHRTFvalues();
@@ -203,7 +227,7 @@ async function initImpulsiveResponse(url) {
     HRIRcontainer = SpatialIRContainer.FromJson(JSON.parse(hrirJson));
 }
 
-function initUserSound() {
+function initUserSound(save = false) {
     let ret = false;
     if(userSoundBuffer && spatializer) {
         if(userSound) {
@@ -216,6 +240,13 @@ function initUserSound() {
         );
         userSound.connect(spatializer.input()); 
         userSound.setBuffer(userSoundBuffer);
+
+        /* Creo y conecto el audio recorder */
+        if (save)
+            recorder?.exportWAV(onExportWav);
+        recorder = new Recorder(spatializer.output());
+        recorder.record();
+
         ret = true;
     }
     return ret;
@@ -262,7 +293,7 @@ function stopAnimation() {
         }
         animating = false;
         userSound.clearOnEnded();
-        initUserSound();
+        initUserSound(true);
         userSound.start();
     }
 }
@@ -349,11 +380,12 @@ function animation() {
     else if ((elapsed >= 29-1.1*step/1000) && (elapsed <= 29)) {
         spatializer.setPosition( spatializer.azimutal, +70, spatializer.distance);   
     }
+    updateHRTFInfo();
 }
 
 function updateHRTFInfo() {
     document.getElementById("azimuthText").textContent = spatializer.azimutal;
-    document.getElementById("elevationText").textContent = spatializer.elevation;    
+    document.getElementById("elevationText").textContent = Math.round(spatializer.elevation);    
     document.getElementById("radiusText").textContent = spatializer.distance;
     document.getElementById("positionText").textContent = spatializer.getPositionText();
     let resp = spatializer.getImpulseResponses();
