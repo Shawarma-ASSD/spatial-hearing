@@ -41,12 +41,29 @@ const _HRTF_ = [
         database: "hutubs",
         url: "https://shawarma-assd.github.io/resources/hrir/HRIR1HUTUBS.json",
         container: null
+    },
+    {
+        database: "chedar",
+        url: "https://shawarma-assd.github.io/resources/hrir/chedar.json",
+        container: null
     }
 ];
 const _WAV_ = [
     {
+        name: "Español (Mujer)",
+        supported: ["ari", "chedar"],
+        url: "https://shawarma-assd.github.io/resources/samples/que_es_esto_48000.wav",
+        buffer: null
+    },
+    {
+        name: "Español (Mujer)",
+        supported: ["hutubs"],
+        url: "https://shawarma-assd.github.io/resources/samples/que_es_esto_44100.wav",
+        buffer: null
+    },
+    {
         name: "Discurso (Hombre)",
-        supported: ["ari"],
+        supported: ["ari", "chedar"],
         url: "https://shawarma-assd.github.io/resources/samples/indian_48000.wav",
         buffer: null
     },
@@ -64,7 +81,7 @@ const _WAV_ = [
     },
     {
         name: "Discurso I (Mujer)",
-        supported: ["ari"],
+        supported: ["ari", "chedar"],
         url: "https://shawarma-assd.github.io/resources/samples/woman_48000.wav",
         buffer: null
     }
@@ -167,6 +184,7 @@ async function onRun() {
     document.getElementById('play').style.visibility = "hidden";
     document.getElementById('stop').style.visibility = "hidden";
     document.getElementById('run').disabled = true;
+    document.getElementById('status').textContent = "Cargando... por favor espere!";
 
     /* Si hay instancias previas, las cierro */
     if (context !== null) {
@@ -215,6 +233,7 @@ async function onRun() {
     document.getElementById('play').style.visibility = "visible";
     document.getElementById('stop').style.visibility = "hidden";
     document.getElementById('run').disabled = false;
+    document.getElementById('status').textContent = "Cargado con éxito!";
 }
 
 // onDatabaseSelected(event)
