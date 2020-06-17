@@ -4,11 +4,12 @@
     <head>
         <title>Prueba 02</title>
         <link rel="stylesheet" href="css/test.css">
+        <meta charset="UTF-8"/>
     </head>
 
     <body>
         <div class="cell">
-            <h1>Prueba 02: Lateralización por diferencias interaurales entre intensidad y tiempo o fase</h1>
+            <h1>Lateralización por diferencias interaurales entre intensidad y tiempo o fase</h1>
             <p>
                 La lateralización es el proceso en el cual se puede producir la formación de una imagen de sonido en el sistema auditivo
                 en diferentes posiciones respecto del azimutal mediante las diferencias de intensidad o fase entre las señales que llegan
@@ -51,14 +52,14 @@
             <h2>Control diferencia de tiempo interaural</h2>
             <span><b>ITD</b></span> <span id="itdText">0</span> <span>mS</span>
             <br>
-            <input style="width: 500px;" type="range" id="itdRange" min="-100" value="0" max="100" onchange="onITDChange(this.value)"></input>
+            <input style="width: 500px;" type="range" id="itdRange" min="-100" value="0" max="100"></input>
         </div>
 
         <div class="cell">
             <h2>Control diferencia de intensidad interaural</h2>
             <span><b>IID</b></span> <span id="iidText">0</span> <span>dB</span>
             <br>
-            <input style="width: 500px;" type="range" id="iidRange" min="-100" value="0" max="100" onchange="onIIDChange(this.value)"></input>
+            <input style="width: 500px;" type="range" id="iidRange" min="-100" value="0" max="100""></input>
         </div>
 
         <div class="cell">
@@ -68,6 +69,6 @@
             <button id="resetButton">Reiniciar posición</button>
         </div>
 
-        <script src="main.js"></script>
+        <script type="module" src="main.js"></script>
     </body>
 </html>

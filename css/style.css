@@ -37,32 +37,18 @@ body {
     background-position: right center; /* change the direction of the change here */
 }
 
-.intro-title {
-    color: rgb(114, 87, 87);
-    font-family: BebasNeue;
-    font-size: 100px;
-    margin: 2px;
-}
-
-.intro-message {
-    -webkit-font-smoothing: antialiased;
-    color: white;
-    font-family: Neufreit;
-    font-size: 23px;
-    margin: 2px;
-}
-
 .test-title {
     color: rgb(252, 202, 51);
     font-family: Bebas;
-    font-size: 35px;
+    font-size: 40px;
 }
 
 .test-message {
     -webkit-font-smoothing: antialiased;
     color: white;
-    font-family: Neufreit;
-    font-size: 19px;
+    font-family: sans-serif;
+    text-align: justify;
+    font-size: 21px;
 }
 
 @font-face {
