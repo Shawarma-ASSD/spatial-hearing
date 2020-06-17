@@ -19,23 +19,25 @@
             </p>
             <b><span>Volumen: </span></b> <span id="volumeText">100</span> <span>%</span>
             <input type="range" id="volume" value="100" min="0" max="500" step="1"></input>
-        </div>
 
+            <h4> Grabaciones </h4>
+            <p> Aqui aparecen las grabaciones que se van generando a lo largo del programa.</p>
+            <ul id="recordings"></ul>
+        </div>
 
         <div class="cell">
             <h2>2. Seleccion de las coordenadas</h2>
             <p>
                 Seleccionar que coordenadas utilizar para la HRTF y se buscara la mas cercana.
             </p>
-            <b><span>Azimuth: </span></b> <span id="azimuthText">0</span> <span>°</span>
+            <b><span>Azimuth: </span></b> <span id="azimuthText">0</span> <span>&deg</span>
             <input type="range" id="azimuth" value="0" min="0" max="360" step="1"></input>
-            <b><span>Elevation: </span></b> <span id="elevationText">0</span> <span>°</span>
+            <b><span>Elevation: </span></b> <span id="elevationText">0</span> <span>&deg</span>
             <input type="range" id="elevation" value="0" min="-90" max="90" step="1"></input>
             <b><span>Radius: </span></b> <span id="radiusText">1</span> <span>m</span>
             <br>
             <button id="animationButton"> Start moving sound source </button>
-            <button id="offAnimationButton"> Stop moving </button> <br>
-            <ul id="recordings"></ul>
+            <button id="offAnimationButton"> Stop moving </button> 
             <br>
         </div>
 
