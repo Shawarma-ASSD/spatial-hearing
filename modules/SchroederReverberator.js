@@ -7,13 +7,14 @@ export class SchroederReverberatorNode extends SpatialNode {
         super(context);
 
         // Creando contexto y nodos
+        this.outputBuffer = new GainNode(this.context);
         this.bufferNode = new GainNode(this.context);
         this.inputGainNode = new GainNode(this.context);
         this.feedbackGainNode = new GainNode(this.context);
         this.loopGainNode = new GainNode(this.context);
         this.delayNode = new DelayNode(this.context);
         this.reverberators = [new AllPassReverberatorNode(this.context), new AllPassReverberatorNode(this.context)];
-
+        
         // Conexión de nodos
         this.bufferNode.connect(this.inputGainNode);
         this.bufferNode.connect(this.delayNode);
@@ -22,6 +23,8 @@ export class SchroederReverberatorNode extends SpatialNode {
         this.reverberators[0].connect(this.reverberators[1].input());
         this.reverberators[1].connect(this.feedbackGainNode);
         this.reverberators[1].connect(this.loopGainNode);
+        this.loopGainNode.connect(this.outputBuffer);
+        this.inputGainNode.connect(this.outputBuffer);
     }
 
     // setParameters
@@ -44,18 +47,22 @@ export class SchroederReverberatorNode extends SpatialNode {
         return this.bufferNode;
     }
 
+    // output
+    // Expone la salida del nodo para conexiones externas
+    output() {
+        return this.outputBuffer;
+    }
+
     // connect
     // Conecta la salida del SchroederReverberatorNode
     connect(node) {
-        this.loopGainNode.connect(node);
-        this.inputGainNode.connect(node);
+        this.outputBuffer.connect(node);
     }
 
     // disconnect
     // Desconecta la salida del SchroederReverberatorNode
     disconnect(node) {
-        this.loopGainNode.disconnect(node);
-        this.inputGainNode.disconnect(node);
+        this.outputBuffer.disconnect(node);
     }
 }
 
