@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+
+<html> 
+    <head>
+        <link rel="stylesheet" href="../../../css/tests.css">
+        <meta charset="UTF-8"/>
+        <title>Aplicación de reverberación</title>
+    </head>
+
+    <body>
+        <div class="cell">
+            <h1> Reverberación</h1>
+                <p>
+                    Pensemos en una fuente de sonido, la onda que propaga en dirección directa hacia el oído es lo que denominamos como direct sound. Dado un determinado contexto físico en el cual se habita durante la emisión del sonido, la propagación omnidireccional del mismo produce colisiones con obstáculos con los cuales, según la composición y forma del material, se dan reflexiones omnidireccionales que pueden llegar al oído dando origen al reflected sound.
+                </p>
+                <p>
+                    El efecto resultante de su superposición da origen a la reverberación, donde en el resultado se puede evidenciar el hecho de que cada onda reflejada recorre un camino diferente y eso provoca que lleguen en diferentes instantes. 
+                </p>
+                <div>
+                    <img src="../resources/reverb.png"></img>
+                </div>
+                <p>
+                    Al agregar reverberación al sistema, se logra mejorar la percepción de profundidad o distancia en el sonido. Sin esta y utilizando únicamente la HRTF se encuentran inconvenientes para externalizar la fuente de sonido respecto de la posición egocéntrica.
+                    Finalmente se utilizan 2 formas de simular reberveración, por medio de las BRIR y con el reverberador de Schroeder.
+                </p>    
+                    
+        <div>
+        <div class="cell">
+            <h1> BRIR:Binaural Room Impulse Response</h1>
+                <p>  
+                    Las BRIR son mediciones que capturan las propiedades de filtrado de la cabeza y oido, en una habitación en la que hay reverberación presente. Estas mediciones son realizadas generalmente utilizando un torso y cabeza de prueba, con micrófonos donde se ubicarían los oídos. Estos cuerpos son rotados y movidos por la habitación para poder caracterizar su respuesta impulsiva. 
+                </p>
+                <p>
+                    De esta forma, al convolucionar esta respuesta impulsiva con la señal de audio utilizada, es posible emular como se escucharía este si se hubiera originado en dicha habitación.
+                </p>
+                <h1> Reverberador de Schroeder</h1>
+                <p>  
+                    Otra forma de emular la reverberación es por medio del reverberador de Schroeder. Este presenta la ventaja de que se hace digitalmente y no se requieren de bases de datos para su implementación. Se presenta a continuación un esquema del reverberador implementado.
+                </p>
+                <div>
+                    <img src="../resources/reverberator_schroeder.png"></img>
+                </div>
+        </div>
+        
+
+        <div id="toolbar">
+            <h1> Prueba de sonido</h1>
+            <div>
+                <select id="reverberator"></select>
+                <select id="sample"></select>
+                <button id="run">Cargar</button>
+                <button id="play" disabled>Reproducir</button>
+                <button id="stop" disabled>Parar</button>
+            </div>
+            <div>
+                <b><span>Volumen: </span></b> <span id="volumeText">100</span> <span>%</span>
+                <input type="range" id="volume" value="100" min="0" max="100" step="1"></input>
+                <b><span>Distancia: </span></b> <span id="distanceText">0</span> <span>%</span>
+                <input type="range" id="distance" value="1" min="1" max="4" step="0.01"></input>
+            </div>
+            <span id="status"></span>
+            <ul id="recordings"></ul>
+        </div>
+        
+        <div id="recordinglist">
+        </div>
+        <script src="../../../modules/recorder.js"></script>
+        <script type="module" src="main.js"></script>
+    </body>
+</html>
