@@ -49,14 +49,14 @@
                 <select id="reverberator"></select>
                 <select id="sample"></select>
                 <button id="run">Cargar</button>
+                <button id="play" disabled>Reproducir</button>
+                <button id="stop" disabled>Parar</button>
+            </div>
+            <div>
                 <b><span>Volumen: </span></b> <span id="volumeText">100</span> <span>%</span>
                 <input type="range" id="volume" value="100" min="0" max="100" step="1"></input>
                 <b><span>Distancia: </span></b> <span id="distanceText">0</span> <span>%</span>
                 <input type="range" id="distance" value="1" min="1" max="4" step="0.01"></input>
-                <b><span>Azimuth: </span></b> <span id="azimuthText">0</span> <span>&deg</span>
-                <input type="range" id="azimuth" value="0" min="0" max="360" step="1" disabled></input><br>
-                <button id="play" disabled  class="play-button"></button>
-                <button id="stop" disabled  class="stop-button"></button>
             </div>
             <span id="status"></span>
             <ul id="recordings"></ul>
