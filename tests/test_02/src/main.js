@@ -8,6 +8,14 @@ var amplitude = null;
 var delays = null;
 var gains = null;
 
+/***************************/
+/* Constantes del programa */
+/***************************/
+const _DEFAULT_FREQUENCY_ = 100;
+const _DEFAULT_AMPLITUDE_ = 0;
+const _DEFAULT_ITD_ = 0;
+const _DEFAULT_IID_ = 0;
+
 /************************/
 /* Ejecución y bindings */
 /************************/
@@ -49,8 +57,8 @@ function onStop(event) {
 function onReset(event) {
     iidRange.value = 0;
     itdRange.value = 0;
-    onIIDChange(0);
-    onITDChange(0);
+    iidText.textContent = 0;
+    itdText.textContent = 0;
 };
 
 // onFrequencyChange()
@@ -117,10 +125,16 @@ function initAudioSystem() {
     generator = new OscillatorNode(
         context, 
         {
-            type: "sine"
+            type: "sine",
+            frequency: _DEFAULT_FREQUENCY_
         }
     );
-    amplitude = new GainNode(context);
+    amplitude = new GainNode(
+        context,
+        {
+            gain: _DEFAULT_AMPLITUDE_
+        }
+    );
     delays = [
         new DelayNode(context),
         new DelayNode(context)
