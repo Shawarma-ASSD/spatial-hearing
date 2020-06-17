@@ -3,71 +3,65 @@
 <html> 
     <head>
         <title>Prueba 02</title>
-        <link rel="stylesheet" href="css/test.css">
+        <link rel="stylesheet" href="../../../css/tests.css">
+        <meta charset="UTF-8"/>
     </head>
 
     <body>
-        <div class="cell">
-            <h1>Prueba 02: Lateralización por diferencias interaurales entre intensidad y tiempo o fase</h1>
-            <p>
-                La lateralización es el proceso en el cual se puede producir la formación de una imagen de sonido en el sistema auditivo
-                en diferentes posiciones respecto del azimutal mediante las diferencias de intensidad o fase entre las señales que llegan
-                a cada uno de nuestros oídos. Esto resulta muy evidente desde el punto de vista natural, en el cual una fuente A y una fuente B,
-                iguales en contenido pero ubicadas en posiciones diferentes llegan a cada uno de los oídos con diferentes recorridos. Esto,
-                para las ondas de propagación, implican una atenuación y un desfase temporal diferente para cada arrivo.
-            </p>
+        <h1>Lateralización por diferencias interaurales entre intensidad y tiempo o fase</h1>
+        <p>
+            La lateralización es el proceso en el cual se puede producir la formación de una imagen de sonido en el sistema auditivo
+            en diferentes posiciones respecto del azimutal mediante las diferencias de intensidad o fase entre las señales que llegan
+            a cada uno de nuestros oídos. Esto resulta muy evidente desde el punto de vista natural, en el cual una fuente A y una fuente B,
+            iguales en contenido pero ubicadas en posiciones diferentes llegan a cada uno de los oídos con diferentes recorridos. Esto,
+            para las ondas de propagación, implican una atenuación y un desfase temporal diferente para cada arrivo.
+        </p>
 
-            <p>
-                En conclusión, si podemos controlar la diferencia de tiempo y amplitud entre las ondas que llegan a cada uno de los oídos,
-                luego seremos capaces de simular el comportamiento de ITD, IID. Ese es el objetivo de esta prueba, incorporando un control sobre
-                la señal de entrada en frecuencia para poder analizar la respuesta en frecuencia, dado que se sabe que por las propiedades de difracción
-                de las ondas según su frecuencia este concepto de lateralización responde diferente según el caso.
-            </p>
+        <p>
+            En conclusión, si podemos controlar la diferencia de tiempo y amplitud entre las ondas que llegan a cada uno de los oídos,
+            luego seremos capaces de simular el comportamiento de ITD, IID. Ese es el objetivo de esta prueba, incorporando un control sobre
+            la señal de entrada en frecuencia para poder analizar la respuesta en frecuencia, dado que se sabe que por las propiedades de difracción
+            de las ondas según su frecuencia este concepto de lateralización responde diferente según el caso.
+        </p>
+        <table>
+            <tr>
+                <th>
+                    <h3>Sonido</h2>
+                    <div>
+                        <span class="valueText" id="frequencyText">100</span> <span>Hz</span>
+                        <br>
+                        <input style="width: 500px;" type="range" id="frequency" min="100" max="2000" step="1" value="100"></input>
+                    </div>
+                    <div>
+                        <span class="valueText" id="amplitudeText">0</span> <span>%</span>
+                        <br>
+                        <input style="width: 500px;" type="range" id="amplitude" value="100" min="0" max="100" value="0"></input>
+                    </div>
+                </th>
+                <th>
+                    <h3>Diferencias interaurales</h2>
+                    <div>
+                        <span class="valueText" id="itdText">0</span> <span>mS</span>
+                            <br>
+                        <input style="width: 500px;" type="range" id="itdRange" min="-100" value="0" max="100"></input>
+                    </div>
+                    <div>
+                        <span class="valueText" id="iidText">0</span> <span>dB</span>
+                        <br>
+                        <input style="width: 500px;" type="range" id="iidRange" min="-100" value="0" max="100""></input>
+                    </div>
+                </th>
+            </tr>
+        </table>
 
-            <div>
-                <img src="../resources/lateralization_concept.png"></img>
-                <img src="../resources/itd_iid_response.png"></img>
-                <img src="../resources/itd_measurement.png"></img>
-            </div>
-            
-            <img src="../resources/diagrama.png"></img>
+        <br>
+        
+        <div>
+            <button class="play-button" id="playButton"></button>
+            <button class="stop-button" id="stopButton"></button>
+            <button class="reset-button" id="resetButton"></button>
         </div>
 
-        <div class="cell">
-            <h2>Generador de senoidal</h2>
-            <div>
-                <span><b>Frecuencia</b> </span> <span id="frequencyText">100</span> <span>Hz</span>
-                <br>
-                <input style="width: 500px;" type="range" id="frequency" min="100" max="2000" step="1" value="100"></input>
-            </div>
-            <div>
-                <span><b>Intensidad</b> </span> <span id="amplitudeText">0</span> <span>%</span>
-                <br>
-                <input style="width: 500px;" type="range" id="amplitude" value="100" min="0" max="100" value="0"></input>
-            </div>
-        </div>
-
-        <div class="cell">
-            <h2>Control diferencia de tiempo interaural</h2>
-            <span><b>ITD</b></span> <span id="itdText">0</span> <span>mS</span>
-            <br>
-            <input style="width: 500px;" type="range" id="itdRange" min="-100" value="0" max="100" onchange="onITDChange(this.value)"></input>
-        </div>
-
-        <div class="cell">
-            <h2>Control diferencia de intensidad interaural</h2>
-            <span><b>IID</b></span> <span id="iidText">0</span> <span>dB</span>
-            <br>
-            <input style="width: 500px;" type="range" id="iidRange" min="-100" value="0" max="100" onchange="onIIDChange(this.value)"></input>
-        </div>
-
-        <div class="cell">
-            <h2>Controles generales</h2>
-            <button id="playButton">Reproducir</button>
-            <button id="stopButton">Parar</button>
-            <button id="resetButton">Reiniciar posición</button>
-        </div>
-
-        <script src="main.js"></script>
+        <script type="module" src="main.js"></script>
     </body>
 </html>

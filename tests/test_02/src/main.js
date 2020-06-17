@@ -8,6 +8,14 @@ var amplitude = null;
 var delays = null;
 var gains = null;
 
+/***************************/
+/* Constantes del programa */
+/***************************/
+const _DEFAULT_FREQUENCY_ = 100;
+const _DEFAULT_AMPLITUDE_ = 0;
+const _DEFAULT_ITD_ = 0;
+const _DEFAULT_IID_ = 0;
+
 /************************/
 /* Ejecución y bindings */
 /************************/
@@ -23,6 +31,8 @@ document.getElementById("stopButton").onclick = onStop;
 document.getElementById("resetButton").onclick = onReset;
 document.getElementById("frequency").onchange = onFrequencyChange;
 document.getElementById("amplitude").onchange = onAmplitudeChange;
+document.getElementById("iidRange").onchange = onIIDChange;
+document.getElementById("itdRange").onchange = onITDChange;
 
 initAudioSystem();
 
@@ -47,8 +57,8 @@ function onStop(event) {
 function onReset(event) {
     iidRange.value = 0;
     itdRange.value = 0;
-    onIIDChange(0);
-    onITDChange(0);
+    iidText.textContent = 0;
+    itdText.textContent = 0;
 };
 
 // onFrequencyChange()
@@ -69,11 +79,12 @@ function onAmplitudeChange(event) {
 
 // onITDChange
 // El usuario modifica la presencia del ITD
-function onITDChange(currentITD) {
+function onITDChange(event) {
     // La idea es que currentITD en modulo va de 0% a 100% y con eso
     // se puede controlar del minimo al maximo valor de ITD, siendo
     // positivo o negativo para indicar si se aplica el retardo
     // del lado derecho o izquierdo respectivamente.
+    let currentITD = event.target.value;
     let delay = 1.5e-3 * (Math.abs(currentITD) / 100);
     delays[0].delayTime.value = currentITD > 0 ? delay : 0;
     delays[1].delayTime.value = currentITD < 0 ? delay : 0;
@@ -82,16 +93,17 @@ function onITDChange(currentITD) {
 
 // onIIDChange
 // El usuario modifica la presencia del IID
-function onIIDChange(currentIID) {
+function onIIDChange(event) {
     // La idea es que currentIID en modulo va de 0% a 100%, con esto
     // se puede controlar que la diferencia de intensidad se pueda manejar
     // de 0dB a 10dB. Según si es negativo o positivo, la atenuación se aplica
     // sobre el lado derecho o izquierdo respectivamente.
+    let currentIID = event.target.value;
     let dbAttenuation = (10) * (Math.abs(currentIID) / 100);
     let attenuation = Math.pow(10, -dbAttenuation / 20);
     gains[0].gain.value = currentIID > 0 ? attenuation : 1;
     gains[1].gain.value = currentIID < 0 ? attenuation : 1;
-    iid.textContent = dbAttenuation;
+    iidText.textContent = dbAttenuation;
 };
 
 /*******************************/
@@ -113,10 +125,16 @@ function initAudioSystem() {
     generator = new OscillatorNode(
         context, 
         {
-            type: "sine"
+            type: "sine",
+            frequency: _DEFAULT_FREQUENCY_
         }
     );
-    amplitude = new GainNode(context);
+    amplitude = new GainNode(
+        context,
+        {
+            gain: _DEFAULT_AMPLITUDE_
+        }
+    );
     delays = [
         new DelayNode(context),
         new DelayNode(context)
