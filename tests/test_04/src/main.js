@@ -135,8 +135,8 @@ function onExportWav(blob) {
 // Se busca iniciar la reproducción.
 function onPlay() {
     document.getElementById('status').textContent = "Grabando...";
-    document.getElementById('play').disabled = true;
-    document.getElementById('stop').disabled = false;
+    document.getElementById('play').style.visibility = "hidden";
+    document.getElementById('stop').style.visibility  = "visible";
     context?.resume();
     recorder?.clear();
     recorder?.record();
@@ -146,8 +146,8 @@ function onPlay() {
 // Se busca parar la reproducción.
 function onStop() {
     document.getElementById('status').textContent = "Grabación finalizada.";
-    document.getElementById('play').disabled = false;
-    document.getElementById('stop').disabled = true;
+    document.getElementById('play').style.visibility = "visible";
+    document.getElementById('stop').style.visibility  = "hidden";
     context?.suspend();
     recorder?.stop();
     recorder?.exportWAV(onExportWav);
@@ -156,8 +156,8 @@ function onStop() {
 // onRun()
 // Se mandaron a cargar las configuraciones deseadas de HRTF y muestra wav.
 async function onRun() {
-    document.getElementById('play').disabled = true;
-    document.getElementById('stop').disabled = true;
+    document.getElementById('play').style.visibility = "hidden";
+    document.getElementById('stop').style.visibility = "hidden";
     document.getElementById('run').disabled = true;
 
     /* Si hay instancias previas, las cierro */
@@ -202,8 +202,8 @@ async function onRun() {
     recorder = new Recorder(volume);
 
     /* Habilito botones */
-    document.getElementById('play').disabled = false;
-    document.getElementById('stop').disabled = true;
+    document.getElementById('play').style.visibility = "visible";
+    document.getElementById('stop').style.visibility = "hidden";
     document.getElementById('run').disabled = false;
 }
 

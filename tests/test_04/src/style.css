@@ -19,3 +19,11 @@ body {
 span {
     color: white;
 }
+
+#play {
+    visibility: hidden;
+}
+
+#stop {
+    visibility: hidden;
+}

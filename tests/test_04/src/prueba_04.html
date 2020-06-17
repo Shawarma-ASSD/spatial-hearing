@@ -2,8 +2,8 @@
 <html>
     <head>
         <link rel="stylesheet" type="text/css" href="style.css">
-        <script src="../../../modules/recorder.js"></script>
-        <script type="module" src="main.js"></script>
+        <link rel="stylesheet" href="../../../css/tests.css">
+        <meta charset="UTF-8"/>
     </head>
     <body>
         <div id="toolbar">
@@ -15,8 +15,8 @@
                     <option value="brir">Reverberador BRIR</option>
                 </select>
                 <button id="run">Cargar</button>
-                <button id="play" disabled>Reproducir</button>
-                <button id="stop" disabled>Parar</button>
+                <button class="play-button" id="play"></button>
+                <button class="stop-button" id="stop"></button>
             </div>
             <span id="status"></span>
             <ul id="recordings"></ul>
@@ -24,5 +24,7 @@
         
         <div id="recordinglist">
         </div>
+        <script src="../../../modules/recorder.js"></script>
+        <script type="module" src="main.js"></script>
     </body>
 </html>

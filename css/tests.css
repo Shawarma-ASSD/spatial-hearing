@@ -6,7 +6,7 @@ body {
 .button-bar {
     text-align: center;
     padding: 10px;
-    margin: 5px;
+    margin: 50px;
 }
 
 .valueText {
@@ -24,6 +24,7 @@ body {
     cursor: pointer; /* Mouse pointer on hover */
     height: 50px;
     width: 50px;
+    margin: 5px;
 }
 
 .stop-button {
@@ -32,8 +33,9 @@ body {
     background-size: 100%;
     border: none; /* Remove borders */
     cursor: pointer; /* Mouse pointer on hover */
-    height: 68px;
-    width: 68px;
+    height: 52px;
+    width: 52px;
+    margin: 5px;
 }
 
 .home-button {
@@ -44,6 +46,7 @@ body {
     cursor: pointer; /* Mouse pointer on hover */
     height: 60px;
     width: 60px;
+    margin: 5px;
 }
 
 .reset-button {
@@ -54,6 +57,7 @@ body {
     cursor: pointer; /* Mouse pointer on hover */
     height: 50px;
     width: 50px;
+    margin: 5px;
 }
 
 table {
