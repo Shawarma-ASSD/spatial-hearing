@@ -385,7 +385,7 @@ function animation() {
 
 function updateHRTFInfo() {
     document.getElementById("azimuthText").textContent = spatializer.azimutal;
-    document.getElementById("elevationText").textContent = spatializer.elevation;    
+    document.getElementById("elevationText").textContent = Math.round(spatializer.elevation);    
     document.getElementById("radiusText").textContent = spatializer.distance;
     document.getElementById("positionText").textContent = spatializer.getPositionText();
     let resp = spatializer.getImpulseResponses();
