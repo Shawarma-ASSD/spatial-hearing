@@ -29,7 +29,9 @@ class Plotter {
           canvasWidth: 800,
           canvasHeight: 800 / Math.sqrt(2),
           yAxisColor: "#FFF",
-          xAxisColor: "#FFF"
+          xAxisColor: "#FFF",
+          colorList : ["#FF0000","#00FF00"],
+          colorIndex: 0
       };
 
       // Creamos el grafico de la HRIR
