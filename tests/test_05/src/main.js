@@ -40,14 +40,14 @@ const _WAV_ = [
     },
     {
         name: "Discurso II (Mujer)",
-        supported: ["Chamber Hall","Conference Room"],
+        supported: ["Chamber Hall","Conference Room", "Schroeder"],
         url: "https://shawarma-assd.github.io/resources/samples/female.wav",
         rate: 44100,
         buffer: null
     },
     {
         name: "Discurso I (Mujer)",
-        supported: ["Chamber Hall","Conference Room"],
+        supported: ["Chamber Hall","Conference Room", "Schroeder"],
         url: "https://shawarma-assd.github.io/resources/samples/woman_44100.wav",
         rate: 44100,
         buffer: null
