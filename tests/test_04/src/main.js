@@ -25,7 +25,7 @@ const _BRIR_ = [
     },
     {
         name: "Conference",
-        url: "https://shawarma-assd.github.io/resources/brir/conference_room.json",
+        url: "https://shawarma-assd.github.io/resources/brir/conference_room_p2.json",
         container: null
     }
 ];
@@ -50,13 +50,13 @@ const _HRTF_ = [
 ];
 const _WAV_ = [
     {
-        name: "Español (Mujer)",
+        name: "Discurso III (Mujer)",
         supported: ["ari", "chedar"],
         url: "https://shawarma-assd.github.io/resources/samples/que_es_esto_48000.wav",
         buffer: null
     },
     {
-        name: "Español (Mujer)",
+        name: "Discurso III (Mujer)",
         supported: ["hutubs"],
         url: "https://shawarma-assd.github.io/resources/samples/que_es_esto_44100.wav",
         buffer: null
