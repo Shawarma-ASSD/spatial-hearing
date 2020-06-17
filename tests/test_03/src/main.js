@@ -387,7 +387,6 @@ function updateHRTFInfo() {
     document.getElementById("azimuthText").textContent = spatializer.azimutal;
     document.getElementById("elevationText").textContent = Math.round(spatializer.elevation);    
     document.getElementById("radiusText").textContent = spatializer.distance;
-    document.getElementById("positionText").textContent = spatializer.getPositionText();
     let resp = spatializer.getImpulseResponses();
     plotter.plot([resp.getChannelData(0), resp.getChannelData(1)]);
 }
