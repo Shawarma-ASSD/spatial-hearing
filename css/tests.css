@@ -16,6 +16,37 @@ body {
     font-size: 30px;
 }
 
+.control-style {
+    vertical-align: middle;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    display: inline-block;
+    color: black;
+    border: none;
+    text-align: center;
+    text-decoration: none;
+    font-size: 20px;
+    font-family: Bebas;
+    flex: 1 1 auto;
+    height: 45px;
+    margin: 5px;
+    padding: 10px;
+    text-transform: uppercase;
+    transition: 0.5s;
+    background-size: 200% auto;
+    background-image: linear-gradient(to right, rgb(252, 202, 51) 0%, rgb(255, 115, 47) 51%, rgb(242, 76, 52) 100%);
+}
+
+.control-style:hover {
+    background-position: right center; /* change the direction of the change here */
+}
+
+.control-style select {
+    -moz-appearance:none; /* Firefox */
+    -webkit-appearance:none; /* Safari and Chrome */
+    appearance:none;
+}
+
 .play-button {
     vertical-align: middle;
     background: url("../img/play_button.png") no-repeat;
@@ -124,4 +155,8 @@ input[type=range] {
 @font-face {
     font-family: Neufreit;
     src: url("../webfonts/Neufreit-ExtraBold.otf");
+}
+
+audio {
+    vertical-align: middle;
 }

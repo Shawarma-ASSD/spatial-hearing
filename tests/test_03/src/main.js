@@ -97,12 +97,14 @@ function onExportWav(blob) {
     var url = URL.createObjectURL(blob);
     var li = document.createElement('li');
     var au = document.createElement('audio');
-    var hf = document.createElement('a');
+    var hf = document.createElement('button');
     au.controls = true;
     au.src = url;
     hf.href = url;
     hf.download = new Date().toISOString() + '.wav';
-    hf.innerHTML = 'Download .WAV';
+    hf.innerHTML = 'Descargar';
+    hf.className = 'control-style';
+    hf.onclick = function download() {location.href = url;};
     li.appendChild(au);
     li.appendChild(hf);
     document.getElementById('recordings').appendChild(li);

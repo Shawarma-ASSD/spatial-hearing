@@ -120,12 +120,14 @@ function onExportWav(blob) {
     var url = URL.createObjectURL(blob);
     var li = document.createElement('li');
     var au = document.createElement('audio');
-    var hf = document.createElement('a');
+    var hf = document.createElement('button');
     au.controls = true;
     au.src = url;
     hf.href = url;
     hf.download = new Date().toISOString() + '.wav';
-    hf.innerHTML = 'Download .WAV';
+    hf.innerHTML = 'Descargar';
+    hf.className = 'control-style';
+    hf.onclick = function download() {location.href = url;};
     li.appendChild(au);
     li.appendChild(hf);
     document.getElementById('recordings').appendChild(li);
@@ -135,6 +137,8 @@ function onExportWav(blob) {
 // Se busca iniciar la reproducción.
 function onPlay() {
     document.getElementById('status').textContent = "Grabando...";
+    document.getElementById('play').disabled = true;
+    document.getElementById('stop').disabled = false;
     document.getElementById('play').style.visibility = "hidden";
     document.getElementById('stop').style.visibility  = "visible";
     context?.resume();
@@ -146,6 +150,8 @@ function onPlay() {
 // Se busca parar la reproducción.
 function onStop() {
     document.getElementById('status').textContent = "Grabación finalizada.";
+    document.getElementById('play').disabled = false;
+    document.getElementById('stop').disabled = true;
     document.getElementById('play').style.visibility = "visible";
     document.getElementById('stop').style.visibility  = "hidden";
     context?.suspend();
@@ -156,6 +162,8 @@ function onStop() {
 // onRun()
 // Se mandaron a cargar las configuraciones deseadas de HRTF y muestra wav.
 async function onRun() {
+    document.getElementById('play').disabled = true;
+    document.getElementById('stop').disabled = true;
     document.getElementById('play').style.visibility = "hidden";
     document.getElementById('stop').style.visibility = "hidden";
     document.getElementById('run').disabled = true;
@@ -202,6 +210,8 @@ async function onRun() {
     recorder = new Recorder(volume);
 
     /* Habilito botones */
+    document.getElementById('play').disabled = false;
+    document.getElementById('stop').disabled = true;
     document.getElementById('play').style.visibility = "visible";
     document.getElementById('stop').style.visibility = "hidden";
     document.getElementById('run').disabled = false;

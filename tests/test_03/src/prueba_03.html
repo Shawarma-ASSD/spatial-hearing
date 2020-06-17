@@ -38,19 +38,17 @@
             <p> 
                 Si presiona 'Start moving sound', empezará una animación donde el sonido se mueve según una 
                 trayectoria predeterminada, y se deja de tener control sobre las coordenadas utilizadas de la HRTF.
-            </p>
-            <button id="animationButton"> Start moving sound </button>
-            <p>
                 Presionar 'Stop moving sound' para retomar el control sobre las coordenadas.
             </p>
-            <button id="offAnimationButton"> Stop moving sound</button>     
-            <br><br>
             <div>
+                <button class="control-style" id="animationButton"> Start moving sound </button>
+                <button class="control-style" id="offAnimationButton"> Stop moving sound</button>     
+                <button class="home-button" id="homeButton" onclick="location.href='../../../index.html';"></button>
                 <button class="play-button" id="playButton"></button>
                 <button class="stop-button" id="stopButton"></button>
             </div><br>
             <div>
-                <b><span>Volumen: </span></b> <span id="volumeText">100</span> <span>%</span> 
+                <b><span>Volumen: </span></b> <span class="valueText" id="volumeText">100</span> <span>%</span> 
                 <input type="range" id="volume" value="100" min="0" max="500" step="1"></input> <br>        
             </div>
         </div>

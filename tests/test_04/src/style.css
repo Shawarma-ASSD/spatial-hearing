@@ -8,6 +8,7 @@ body {
     position: absolute;
     top: 0;
     left: 0;
+    margin: 10px;
 }
 
 #recordingslist {
@@ -26,4 +27,14 @@ span {
 
 #stop {
     visibility: hidden;
+}
+
+#exit {
+    float: right;
+}
+
+#status {
+    font-family: BebasNeue;
+    font-size: 20px;
+    margin:  10px 0 0 10px;
 }

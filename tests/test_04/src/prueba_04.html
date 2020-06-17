@@ -8,15 +8,16 @@
     <body>
         <div id="toolbar">
             <div>
-                <select id="database"></select>
-                <select id="sample"></select>
-                <select id="reverberator">
+                <select class="control-style" id="database"></select>
+                <select class="control-style" id="sample"></select>
+                <select class="control-style" id="reverberator">
                     <option value="schroeder">Reverberador Schroeder</option>
                     <option value="brir">Reverberador BRIR</option>
                 </select>
-                <button id="run">Cargar</button>
-                <button class="play-button" id="play"></button>
-                <button class="stop-button" id="stop"></button>
+                <button class="control-style" id="run">Cargar</button>
+                <button class="control-style" id="play">Reproducir</button>
+                <button class="control-style" id="stop">Parar</button>
+                <button class="control-style" id="exit" onclick="location.href='../../../index.html'">Salir</button>
             </div>
             <span id="status"></span>
             <ul id="recordings"></ul>
@@ -24,6 +25,7 @@
         
         <div id="recordinglist">
         </div>
+        
         <script src="../../../modules/recorder.js"></script>
         <script type="module" src="main.js"></script>
     </body>
